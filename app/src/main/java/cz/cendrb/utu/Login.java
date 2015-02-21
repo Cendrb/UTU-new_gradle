@@ -102,7 +102,7 @@ public class Login extends Activity {
     }
 
     private void showData() {
-        Intent intent = new Intent(this, utu.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -113,8 +113,8 @@ public class Login extends Activity {
 
         @Override
         protected LoginResult doInBackground(Void... voids) {
-            if (utu.isOnline(activity)) {
-                switch (utu.utuClient.login(email.getText().toString(), password.getText().toString())) {
+            if (Static.isOnline(activity)) {
+                switch (MainActivity.utuClient.login(email.getText().toString(), password.getText().toString())) {
                     case LoggedIn:
                         showData();
                         return LoginResult.WebLoginSuccess;

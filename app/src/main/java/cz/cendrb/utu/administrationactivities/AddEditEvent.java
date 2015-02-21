@@ -3,9 +3,9 @@ package cz.cendrb.utu.administrationactivities;
 import android.app.Activity;
 import android.widget.Toast;
 
+import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
 import cz.cendrb.utu.TaskWithProgressDialog;
-import cz.cendrb.utu.utu;
 
 /**
  * Created by Cendrb on 16. 11. 2014.
@@ -32,7 +32,7 @@ public class AddEditEvent {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            return utu.utuClient.deleteEvent(id);
+            return MainActivity.utuClient.deleteEvent(id);
         }
 
         @Override

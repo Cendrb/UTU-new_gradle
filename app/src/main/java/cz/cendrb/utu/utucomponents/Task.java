@@ -12,8 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import cz.cendrb.utu.MainActivity;
+import cz.cendrb.utu.Static;
 import cz.cendrb.utu.administrationactivities.AddEditTask;
-import cz.cendrb.utu.utu;
 
 public class Task {
 
@@ -52,7 +53,7 @@ public class Task {
         description = data.getAttribute(DESCRIPTION);
         additionalInfoUrl = data.getAttribute(ADDITIONAL_INFO_URL);
         subjectString = data.getAttribute(SUBJECT);
-        subject = utu.utuClient.subjects.get(subjectString);
+        subject = MainActivity.utuClient.subjects.get(subjectString);
         try {
             date = df.parse(data.getAttribute(DATE));
         } catch (ParseException e) {
@@ -74,7 +75,7 @@ public class Task {
             record.put(ADDITIONAL_INFO_URL, "žádné");
         else
             record.put(ADDITIONAL_INFO_URL, additionalInfoUrl);
-        record.put(utu.UTU_TYPE_IDENTIFIER, "task");
+        record.put(Static.UTU_TYPE_IDENTIFIER, "task");
         String stringGroup = "";
         switch (group) {
             case 0:

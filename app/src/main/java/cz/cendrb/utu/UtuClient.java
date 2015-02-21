@@ -7,7 +7,6 @@ import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -253,7 +252,7 @@ public class UtuClient {
             loginData.add(new BasicNameValuePair("password", password));
 
             HttpResponse response = getPOSTResponseWithParams("http://utu.herokuapp.com/login.whoa", loginData);
-            Log.d(utu.getPrefix(), response.getStatusLine().toString());
+            Log.d(Static.getPrefix(), response.getStatusLine().toString());
             loggedIn = response.getStatusLine().getStatusCode() == 200;
             if (loggedIn)
                 return LoginRequestResult.LoggedIn;
@@ -261,8 +260,6 @@ public class UtuClient {
                 return LoginRequestResult.WrongCredentials;
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

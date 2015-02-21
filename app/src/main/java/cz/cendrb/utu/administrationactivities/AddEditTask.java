@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
+import cz.cendrb.utu.Static;
 import cz.cendrb.utu.TaskWithProgressDialog;
-import cz.cendrb.utu.utu;
 import cz.cendrb.utu.utucomponents.Task;
 
 public class AddEditTask extends Activity {
@@ -49,7 +50,7 @@ public class AddEditTask extends Activity {
 
         subjectSelect = (Spinner) findViewById(R.id.addTaskSubject);
         ArrayAdapter<CharSequence> subjectAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-        for (Map.Entry<String, Integer> entry : utu.utuClient.subjects.entrySet()) {
+        for (Map.Entry<String, Integer> entry : MainActivity.utuClient.subjects.entrySet()) {
             subjectAdapter.add(entry.getKey());
         }
         subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -100,7 +101,7 @@ public class AddEditTask extends Activity {
             if (title != null && !title.equals("")) {
                 titleText.setText(title);
                 descriptionText.setText(bundle.getString(Task.DESCRIPTION));
-                subjectSelect.setSelection(new ArrayList<Integer>(utu.utuClient.subjects.values()).indexOf(bundle.getInt(Task.SUBJECT)));
+                subjectSelect.setSelection(new ArrayList<Integer>(MainActivity.utuClient.subjects.values()).indexOf(bundle.getInt(Task.SUBJECT)));
                 additionalInformationText.setText(bundle.getString(Task.ADDITIONAL_INFO_URL));
                 groupSelect.setSelection(bundle.getInt(Task.GROUP));
                 dateSelectButton.setText(bundle.getString(Task.DATE));
@@ -154,7 +155,7 @@ public class AddEditTask extends Activity {
     }
 
     public void onSaveButtonClick(View view) {
-        if (utu.isOnline(this)) {
+        if (Static.isOnline(this)) {
             if (editMode)
                 new TaskUpdater(this).execute();
             else
@@ -164,9 +165,9 @@ public class AddEditTask extends Activity {
     }
 
     public void onDateSelectButtonClick(final View view) {
-        utu.DatePickerFragment dialog = new utu.DatePickerFragment();
+        Static.DatePickerFragment dialog = new Static.DatePickerFragment();
         dialog.show(getFragmentManager(), "Choose penis");
-        dialog.setOnDateChangedListener(new utu.DatePickerFragment.OnDateChangedListener() {
+        dialog.setOnDateChangedListener(new Static.DatePickerFragment.OnDateChangedListener() {
             @Override
             public void dateChanged(Date date) {
                 ((Button) view).setText(format.format(date));
@@ -193,7 +194,7 @@ public class AddEditTask extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            return utu.utuClient.deleteTask(id);
+            return MainActivity.utuClient.deleteTask(id);
         }
 
         @Override
@@ -216,8 +217,8 @@ public class AddEditTask extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            Task task = new Task(titleText.getText().toString(), descriptionText.getText().toString(), group, utu.utuClient.subjects.get(subjectName), eDate, additionalInformationText.getText().toString(), id);
-            return utu.utuClient.addTask(task);
+            Task task = new Task(titleText.getText().toString(), descriptionText.getText().toString(), group, MainActivity.utuClient.subjects.get(subjectName), eDate, additionalInformationText.getText().toString(), id);
+            return MainActivity.utuClient.addTask(task);
         }
 
         @Override
@@ -239,8 +240,8 @@ public class AddEditTask extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            Task task = new Task(titleText.getText().toString(), descriptionText.getText().toString(), group, utu.utuClient.subjects.get(subjectName), eDate, additionalInformationText.getText().toString(), id);
-            return utu.utuClient.updateTask(task);
+            Task task = new Task(titleText.getText().toString(), descriptionText.getText().toString(), group, MainActivity.utuClient.subjects.get(subjectName), eDate, additionalInformationText.getText().toString(), id);
+            return MainActivity.utuClient.updateTask(task);
         }
 
         @Override

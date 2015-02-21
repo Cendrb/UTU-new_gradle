@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import cz.cendrb.utu.utu;
+import cz.cendrb.utu.Static;
 
 public class Event {
 
@@ -70,7 +70,7 @@ public class Event {
             record.put(ADDITIONAL_INFO_URL, "žádné");
         else
             record.put(ADDITIONAL_INFO_URL, additionalInfoUrl);
-        record.put(utu.UTU_TYPE_IDENTIFIER, "event");
+        record.put(Static.UTU_TYPE_IDENTIFIER, "event");
         record.put(ID, String.valueOf(id));
         return record;
     }
