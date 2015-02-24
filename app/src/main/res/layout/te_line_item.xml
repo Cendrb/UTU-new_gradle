@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="88dp"
+    android:id="@+id/bottom_container">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="88dp"
+    android:background="#ffffff"
+    android:paddingRight="8dp"
+    android:id="@+id/te_line_item_container">
+<TextView
+    android:id="@+id/teSubjectCircle"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/exam_circle"
+    android:text="VýO"
+    android:layout_marginLeft="12dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="13dp"
+    android:gravity="center"
+    android:textStyle="bold"
+    android:textColor="#c7ffffff"
+    android:textSize="22sp" />
+    <TextView
+        android:id="@+id/teTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phallus"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:gravity="top"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/teSubjectCircle"
+        android:layout_toRightOf="@+id/teSubjectCircle"
+        android:singleLine="true"/>
+    <TextView
+        android:id="@+id/teDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FPenis penis penis penis penis penis púenis piebn is"
+        android:textSize="14sp"
+        android:gravity="top"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="35.5dp"
+        android:layout_toEndOf="@+id/teSubjectCircle"
+        android:layout_toRightOf="@+id/teSubjectCircle"
+        android:singleLine="true"
+        android:ellipsize="end" />
+    <TextView
+        android:id="@+id/teDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="za 1 týden (po 02. 03.)"
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="13dp"
+        android:singleLine="true"
+        android:layout_toEndOf="@+id/teSubjectCircle"
+        android:layout_toRightOf="@+id/teSubjectCircle"/>
+</RelativeLayout>
+</LinearLayout>

@@ -16,7 +16,7 @@ import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.Static;
 import cz.cendrb.utu.administrationactivities.AddEditExam;
 
-public class Exam {
+public class Exam implements ITaskExam, HasID, Comparable<ITaskExam> {
 
     public static final String TITLE = "title";
     public static final String DESCRIPTION = "description";
@@ -136,5 +136,10 @@ public class Exam {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(ITaskExam another) {
+        return getDate().compareTo(another.getDate());
     }
 }

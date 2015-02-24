@@ -1,6 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="colorPrimary">@color/primaryColor</item>
@@ -11,11 +12,22 @@
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@style/Theme.AppCompat.Light">
-    <item name="android:background">#ff49b041</item>
-        <item name="android:backgroundStacked">#ff49b041</item>
-        <item name="android:actionBarDivider">@drawable/ic_launcher</item>
-        <item name="android:displayOptions">showTitle</item>
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:titleTextStyle">@style/titleText</item>
+    </style>
+
+    <style name="titleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#f56455</item>
+        </style>
+
+    <style name="AppTheme.ShowItem" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+    </style>
+
+    <!-- Animations for a non-full-screen window or activity. -->
+    <style name="MyAnimation.Window" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_top</item>
     </style>
 
 </resources>

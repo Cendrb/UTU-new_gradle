@@ -16,8 +16,13 @@ import java.util.Date;
  * Created by cendr_000 on 21. 2. 2015.
  */
 public class Static {
-    static final String NAME = "UTU";
     public static final String UTU_TYPE_IDENTIFIER = "utu_type";
+    public static final String UTU_ID_IDENTIFIER = "index";
+
+    public static final int UTU_TYPE_EXAM = 0;
+    public static final int UTU_TYPE_TASK = 1;
+
+    static final String NAME = "UTU";
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =

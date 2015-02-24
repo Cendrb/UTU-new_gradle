@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import cz.cendrb.utu.Static;
 
-public class Event {
+public class Event implements HasID, Comparable<Event> {
 
     public static final String TITLE = "title";
     public static final String DESCRIPTION = "description";
@@ -109,5 +109,10 @@ public class Event {
 
     public String getAdditionalInfoUrl() {
         return additionalInfoUrl;
+    }
+
+    @Override
+    public int compareTo(Event another) {
+        return getStart().compareTo(another.getStart());
     }
 }

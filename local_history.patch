@@ -1,0 +1,16 @@
+Index: app/src/main/java/cz/cendrb/utu/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/cz/cendrb/utu/Login.java	(revision )
++++ app/src/main/java/cz/cendrb/utu/Login.java	(revision )
+@@ -102,7 +102,7 @@
+     }
+ 
+     private void showData() {
+-        Intent intent = new Intent(this, MainActivity.class);
++        Intent intent = new Intent(this, utu.class);
+         startActivity(intent);
+     }
+ 

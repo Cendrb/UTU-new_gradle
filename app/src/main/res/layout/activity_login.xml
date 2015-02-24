@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/login_text"
-        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/login_text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
         android:id="@+id/loginEmail"
-        android:hint="@string/username_email"
-        android:layout_marginTop="10dp" />
-
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
         android:ems="10"
+        android:hint="@string/username_email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
         android:id="@+id/loginPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/password" />
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
     <CheckBox
+        android:id="@+id/loginPermanentLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/permanent_login"
-        android:id="@+id/loginPermanentLogin"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:checked="false" />
+        android:checked="false"
+        android:text="@string/permanent_login" />
 
     <CheckBox
+        android:id="@+id/loginAutoLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/auto_login"
-        android:id="@+id/loginAutoLogin"
         android:checked="false"
-        android:enabled="false" />
+        android:enabled="false"
+        android:text="@string/auto_login" />
 
     <Button
+        android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_button"
-        android:id="@+id/loginButton"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:text="@string/login_button" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/or"
-        android:id="@+id/textView2"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:text="@string/or"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
+        android:id="@+id/loginViewAll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/view_all"
-        android:id="@+id/loginViewAll"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/view_all" />
 
 </LinearLayout>

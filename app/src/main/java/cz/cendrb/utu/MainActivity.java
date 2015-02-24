@@ -1,7 +1,10 @@
 package cz.cendrb.utu;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -9,23 +12,35 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
 
-import cz.cendrb.utu.utucomponents.Events;
-import cz.cendrb.utu.utucomponents.Exams;
-import cz.cendrb.utu.utucomponents.Tasks;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.cendrb.utu.adapters.TEAdapter;
+import cz.cendrb.utu.foregroundtaskswithdialog.Refresher;
+import cz.cendrb.utu.showactivities.ShowTE;
+import cz.cendrb.utu.utucomponents.ITaskExam;
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     public static UtuClient utuClient = new UtuClient();
+
+    static boolean administratorLoggedIn;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,15 +57,41 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        new IsAdministrator(this).execute();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+/*
+        List<Integer> penis = new ArrayList<>();
+        penis.add(1);
+        penis.add(2);
+        penis.add(3);
+        penis.add(4);
+
+        for(int x : penis)
+            Log.d("DILDO", String.valueOf(x));
+
+        penis.remove(1);
+
+        for(int x : penis)
+            Log.d("DILDO", String.valueOf(x));
+
+        penis.add(2);
+
+        for(int x : penis)
+            Log.d("DILDO", String.valueOf(x));*/
 
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    private void refresh() {
+        Refresher refresher = new Refresher(this, getResources().getString(R.string.wait), getResources().getString(R.string.loading_data), null);
+        refresher.execute();
     }
 
     @Override
@@ -109,6 +150,11 @@ public class MainActivity extends ActionBarActivity
             return true;
         }
 
+        if (item.getItemId() == R.id.action_refresh) {
+            new Refresher(this, getString(R.string.wait), getString(R.string.loading_data), null).execute();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -122,6 +168,17 @@ public class MainActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private RecyclerView mRecyclerView;
+        private LinearLayoutManager mLayoutManager;
+        private RecyclerView.Adapter mAdapter;
+        private RecyclerView.Adapter mWrappedAdapter;
+        private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+        private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
+
+        public PlaceholderFragment() {
+            super();
+        }
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -134,44 +191,86 @@ public class MainActivity extends ActionBarActivity
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+            return rootView;
+        }
+
+        @Override
+        public void onViewCreated(final View rootView, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(rootView, savedInstanceState);
+
+            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerMain);
+            mLayoutManager = new LinearLayoutManager(rootView.getContext());
+            //mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+            // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
+            mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
+            mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
+            mRecyclerViewTouchActionGuardManager.setEnabled(true);
+
+            // swipe manager
+            mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
+
+            // adapter
             Bundle bundle = getArguments();
             int sectionNumber = bundle.getInt(ARG_SECTION_NUMBER);
-            final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.utuListView);
-            recyclerView.setHasFixedSize(true);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(linearLayoutManager);
+
+            List<ITaskExam> data = new ArrayList<>();
 
             switch (sectionNumber) {
                 case 1:
-                    recyclerView.setAdapter(new RecyclerView.Adapter(container.getContext(), MainActivity.utuClient.tasks.getListForAdapter(), R.layout.task_item, Tasks.from, Tasks.to) {
-                    });
+                    data = utuClient.exams;
                     break;
                 case 2:
-                    recyclerView.setAdapter(new SimpleAdapter(container.getContext(), utu.utuClient.events.getListForAdapter(), R.layout.event_item, Events.from, Events.to));
-                    break;
-                case 3:
-                    recyclerView.setAdapter(new SimpleAdapter(container.getContext(), utu.utuClient.exams.getListForAdapter(), R.layout.exam_item, Exams.from, Exams.to));
+                    data = utuClient.tasks;
                     break;
             }
 
-            registerForContextMenu(recyclerView);
-
-            recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            final TEAdapter swipeableTEAdapter = new TEAdapter(rootView.getContext(), data);
+            swipeableTEAdapter.setEventListener(new TEAdapter.EventListener() {
                 @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    recyclerView.showContextMenuForChild(view);
+                public void onItemRemoved(int position) {
+                    //Toast.makeText(rootView.getContext(), "FAP remove", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onItemPinned(int position) {
+                    //Toast.makeText(rootView.getContext(), "FAP pin", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onItemViewClicked(View v, ITaskExam item) {
+                    Intent intent = new Intent(v.getContext(), ShowTE.class);
+                    Log.d("Khokot", item.getTitle());
+                    EventBus.getDefault().postSticky(item);
+                    startActivity(intent);
                 }
             });
-            return rootView;
+
+            mAdapter = swipeableTEAdapter;
+
+            mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mAdapter);
+
+            final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mWrappedAdapter); // set modified adapter
+            mRecyclerView.setItemAnimator(animator);
+
+            //mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) getResources().getDrawable(R.drawable.drawer_shadow)));
+            mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(getResources().getDrawable(R.drawable.list_divider), true));
+
+            // NOTE:
+            // The initialization order is very important! This order determines the priority of touch event handling.
+            //
+            // priority: TouchActionGuard > Swipe > DragAndDrop
+            mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
+            mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
+
         }
 
         @Override
@@ -180,6 +279,32 @@ public class MainActivity extends ActionBarActivity
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+
+
     }
 
+    public static boolean isAdministratorLoggedIn() {
+        return administratorLoggedIn;
+    }
+
+    /**
+     * Created by cendr_000 on 24. 2. 2015.
+     */
+    public static class IsAdministrator extends BackgroundTask<Void, Void, Boolean> {
+
+        public IsAdministrator(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return utuClient.isAdministrator();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            administratorLoggedIn = aBoolean;
+        }
+    }
 }

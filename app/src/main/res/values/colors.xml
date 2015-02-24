@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#ff4bb537</color>
+    <color name="primaryColorDark">#669900</color>
+    <color name="colorAccent">#ffff0d00</color>
+
+    <color name="taskCircleColor">#ff37cd48</color>
+    <color name="examCircleColor">#ff2fb44a</color>
+
+    <color name="bg_swipe_item_neutral">#ffffffff</color>
+    <color name="bg_swipe_item_left">#fff9930d</color>
+    <color name="bg_swipe_item_right">#ff2f8b2a</color>
+
+    <color name="snackbar_action_color_done">#ff0caadc</color>
+</resources>
