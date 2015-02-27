@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/teSubjectCircle"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@drawable/exam_circle"
         android:text="VýO"
         android:gravity="center"
@@ -40,5 +40,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="21. 03. (za 5 dní)"
+        android:id="@+id/teShowDate"
+        android:layout_below="@+id/teShowDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Další informace"
+        android:id="@+id/teShowAdditionalInfo"
+        android:layout_below="@+id/teShowDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>

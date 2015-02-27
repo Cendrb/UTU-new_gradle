@@ -3,11 +3,14 @@ package cz.cendrb.utu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.NinePatchDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cendrb.utu.adapters.TEAdapter;
+import cz.cendrb.utu.backgroundtasks.BackgroundRefresher;
 import cz.cendrb.utu.foregroundtaskswithdialog.Refresher;
 import cz.cendrb.utu.showactivities.ShowTE;
 import cz.cendrb.utu.utucomponents.ITaskExam;
@@ -42,6 +47,7 @@ public class MainActivity extends ActionBarActivity
 
     static boolean administratorLoggedIn;
 
+    int lastPositionSelected;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -59,29 +65,11 @@ public class MainActivity extends ActionBarActivity
 
         new IsAdministrator(this).execute();
 
+
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-/*
-        List<Integer> penis = new ArrayList<>();
-        penis.add(1);
-        penis.add(2);
-        penis.add(3);
-        penis.add(4);
-
-        for(int x : penis)
-            Log.d("DILDO", String.valueOf(x));
-
-        penis.remove(1);
-
-        for(int x : penis)
-            Log.d("DILDO", String.valueOf(x));
-
-        penis.add(2);
-
-        for(int x : penis)
-            Log.d("DILDO", String.valueOf(x));*/
-
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -90,8 +78,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void refresh() {
-        Refresher refresher = new Refresher(this, getResources().getString(R.string.wait), getResources().getString(R.string.loading_data), null);
-        refresher.execute();
+        new BackgroundRefresher(this).execute();
+        onNavigationDrawerItemSelected(lastPositionSelected);
     }
 
     @Override
@@ -99,8 +87,9 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, this))
                 .commit();
+        lastPositionSelected = position;
     }
 
     public void onSectionAttached(int number) {
@@ -146,12 +135,9 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_refresh) {
-            new Refresher(this, getString(R.string.wait), getString(R.string.loading_data), null).execute();
+        if (id == R.id.action_web_version) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://utu.herokuapp.com"));
+            startActivity(browserIntent);
             return true;
         }
 
@@ -175,6 +161,9 @@ public class MainActivity extends ActionBarActivity
         private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
         private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
+        private SwipeRefreshLayout mSwipeRefreshLayout;
+        protected MainActivity mainActivity;
+
         public PlaceholderFragment() {
             super();
         }
@@ -183,11 +172,12 @@ public class MainActivity extends ActionBarActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, MainActivity activity) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+            fragment.mainActivity = activity;
             return fragment;
         }
 
@@ -220,6 +210,8 @@ public class MainActivity extends ActionBarActivity
             int sectionNumber = bundle.getInt(ARG_SECTION_NUMBER);
 
             List<ITaskExam> data = new ArrayList<>();
+
+            Log.d("WHOA", String.valueOf(sectionNumber));
 
             switch (sectionNumber) {
                 case 1:
@@ -261,7 +253,9 @@ public class MainActivity extends ActionBarActivity
             mRecyclerView.setAdapter(mWrappedAdapter); // set modified adapter
             mRecyclerView.setItemAnimator(animator);
 
-            //mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) getResources().getDrawable(R.drawable.drawer_shadow)));
+            //mRecyclerView.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+
+            mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) getResources().getDrawable(R.drawable.drawer_shadow)));
             mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(getResources().getDrawable(R.drawable.list_divider), true));
 
             // NOTE:
@@ -270,6 +264,16 @@ public class MainActivity extends ActionBarActivity
             // priority: TouchActionGuard > Swipe > DragAndDrop
             mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
             mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
+
+            mSwipeRefreshLayout = (SwipeRefreshLayout) mainActivity.findViewById(R.id.activity_main_swipe_refresh_layout);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mainActivity.refresh();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+            mSwipeRefreshLayout.setColorSchemeColors(R.color.primaryColor, R.color.primaryColorDark);
 
         }
 

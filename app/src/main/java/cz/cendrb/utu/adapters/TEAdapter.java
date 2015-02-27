@@ -50,6 +50,8 @@ public class TEAdapter extends RecyclerView.Adapter<TEAdapter.TEViewHolder> impl
         this.context = context;
         this.data = data;
 
+        Log.d(TAG, String.valueOf(data.size()));
+
         setHasStableIds(true);
     }
 

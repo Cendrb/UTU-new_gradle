@@ -1,11 +1,21 @@
 package cz.cendrb.utu.showactivities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+
+import org.ocpsoft.prettytime.PrettyTime;
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
@@ -23,6 +33,8 @@ public class ShowTE extends ActionBarActivity {
     TextView title;
     TextView description;
     TextView subject;
+    TextView date;
+    TextView additionalInfoUrl;
 
     static final int EDIT_MENU_ITEM_ID = 1;
     static final int REMOVE_MENU_ITEM_ID = 2;
@@ -35,6 +47,8 @@ public class ShowTE extends ActionBarActivity {
         title = (TextView) findViewById(R.id.teShowTitle);
         description = (TextView) findViewById(R.id.teShowDescription);
         subject = (TextView) findViewById(R.id.teSubjectCircle);
+        date = (TextView) findViewById(R.id.teShowDate);
+        additionalInfoUrl = (TextView) findViewById(R.id.teShowAdditionalInfo);
 
         item = EventBus.getDefault().getStickyEvent(Exam.class);
         if(item == null)
@@ -44,6 +58,26 @@ public class ShowTE extends ActionBarActivity {
         setTitle(item.getTitle());
         description.setText(item.getDescription());
         subject.setText(item.getSubjectString());
+
+        PrettyTime prettyTime = new PrettyTime();
+        DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)", Locale.ENGLISH);
+        date.setText(prettyTime.format(item.getDate()) + dateFormat.format(item.getDate()));
+
+        if(item.getAdditionalInfoUrl() != null && !item.getAdditionalInfoUrl().equals(""))
+        {
+            additionalInfoUrl.setVisibility(View.VISIBLE);
+            additionalInfoUrl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getAdditionalInfoUrl()));
+                    startActivity(browserIntent);
+                }
+            });
+        }
+        else
+        {
+            additionalInfoUrl.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -57,7 +91,7 @@ public class ShowTE extends ActionBarActivity {
             editMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             editMenuItem.setTitle(R.string.edit);
 
-            MenuItem removeMenuItem = menu.add(Menu.NONE, EDIT_MENU_ITEM_ID, 100, R.string.edit);
+            MenuItem removeMenuItem = menu.add(Menu.NONE, REMOVE_MENU_ITEM_ID, 100, R.string.edit);
             removeMenuItem.setIcon(android.R.drawable.ic_menu_delete);
             removeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             removeMenuItem.setTitle(R.string.exterminate);

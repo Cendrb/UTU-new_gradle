@@ -5,11 +5,13 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ExecutionException;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
 import cz.cendrb.utu.Static;
 import cz.cendrb.utu.TaskWithProgressDialog;
+import cz.cendrb.utu.backgroundtasks.BackgroundRefresher;
 import cz.cendrb.utu.enums.LoadResult;
 
 /**
@@ -23,41 +25,18 @@ public class Refresher extends TaskWithProgressDialog<LoadResult> {
 
     @Override
     protected LoadResult doInBackground(Void... voids) {
-        if (Static.isOnline(activity)) {
-            if (MainActivity.utuClient.loadFromNetAndBackup(activity)) {
-                return LoadResult.WebSuccess;
-            }
-        } else {
-            if (MainActivity.utuClient.backupExists(activity)) {
-                if (MainActivity.utuClient.loadFromBackup(activity))
-                    return LoadResult.BackupSuccess;
-                else
-                    return LoadResult.BackupFailure;
-            }
+        try {
+            return new BackgroundRefresher(activity).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
         return LoadResult.Failure;
     }
 
     @Override
     protected void onPostExecute(LoadResult loadResult) {
-        DateFormat format = new SimpleDateFormat(" dd. MM. yyyy (HH:mm)");
-        switch (loadResult) {
-            case WebSuccess:
-                activity.setTitle(activity.getString(R.string.app_name));
-                break;
-            case BackupFailure:
-                Toast.makeText(activity, activity.getString(R.string.failed_to_load_data_from_backup), Toast.LENGTH_LONG).show();
-                activity.finish();
-                break;
-            case BackupSuccess:
-                Toast.makeText(activity, activity.getString(R.string.successfully_loaded_from_backup) + "format.format(date)", Toast.LENGTH_LONG).show();
-                activity.setTitle(activity.getString(R.string.app_name));
-                break;
-            case Failure:
-                Toast.makeText(activity, R.string.failed_to_load_data, Toast.LENGTH_LONG).show();
-                activity.finish();
-                break;
-        }
         super.onPostExecute(loadResult);
     }
 }

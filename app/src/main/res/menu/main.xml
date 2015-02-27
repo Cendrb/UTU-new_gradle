@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cz.cendrb.utu.MainActivity">
     <item
-        android:id="@+id/action_refresh"
-        app:showAsAction="withText|ifRoom"
-        android:title="@string/action_refresh" />
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@id/action_web_version"
+        android:orderInCategory="99"
         app:showAsAction="never"
-        android:title="@string/action_settings" />
+        android:title="@string/web_version"/>
 </menu>

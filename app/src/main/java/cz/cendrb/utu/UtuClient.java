@@ -1,6 +1,7 @@
 package cz.cendrb.utu;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -68,7 +69,7 @@ public class UtuClient {
         tasks = new ArrayList<>();
 
         HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setSoTimeout(httpParams, 5000);
+        //HttpConnectionParams.setSoTimeout(httpParams, 5000);
 
         client = new DefaultHttpClient(httpParams);
     }
@@ -352,12 +353,12 @@ public class UtuClient {
         }
     }
 
-    public boolean loadFromNetAndBackup(Activity activity) {
+    public boolean loadFromNetAndBackup(Context context) {
         String result;
         boolean subSuccess = false;
         boolean utuSuccess = false;
 
-        File subjectsFile = activity.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
+        File subjectsFile = context.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
         result = getStringFrom("http://utu.herokuapp.com/subjects.xml");
         if (result != null) {
             if (!setSubjectsData(parseXML(result)))
@@ -366,7 +367,7 @@ public class UtuClient {
             subSuccess = true;
         }
 
-        File utuFile = activity.getFileStreamPath(BACKUP_FILE_NAME);
+        File utuFile = context.getFileStreamPath(BACKUP_FILE_NAME);
         result = getStringFrom("http://utu.herokuapp.com/details.xml");
         if (result != null) {
             if (!setUtuData(parseXML(result)))
@@ -378,9 +379,9 @@ public class UtuClient {
         return subSuccess && utuSuccess;
     }
 
-    public boolean loadFromBackup(Activity activity) {
-        File utuFile = activity.getFileStreamPath(BACKUP_FILE_NAME);
-        File subjectsFile = activity.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
+    public boolean loadFromBackup(Context context) {
+        File utuFile = context.getFileStreamPath(BACKUP_FILE_NAME);
+        File subjectsFile = context.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
 
         if (!utuFile.exists() || !subjectsFile.exists())
             return false;
@@ -394,9 +395,9 @@ public class UtuClient {
         return true;
     }
 
-    public boolean backupExists(Activity activity) {
-        File utuFile = activity.getFileStreamPath(BACKUP_FILE_NAME);
-        File subjectsFile = activity.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
+    public boolean backupExists(Context context) {
+        File utuFile = context.getFileStreamPath(BACKUP_FILE_NAME);
+        File subjectsFile = context.getFileStreamPath(BACKUP_SUBJECTS_FILE_NAME);
         return utuFile.exists() && subjectsFile.exists();
     }
 
@@ -540,7 +541,6 @@ public class UtuClient {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Exam exam = new Exam((Element) node);
                     exams.add(exam);
-                    Log.d("FAP", exam.getTitle());
                 }
             }
 
@@ -550,7 +550,6 @@ public class UtuClient {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Task task = new Task((Element) node);
                     tasks.add(task);
-                    Log.d("FAP", task.getTitle());
                 }
             }
 
