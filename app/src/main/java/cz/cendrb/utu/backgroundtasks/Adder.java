@@ -13,7 +13,7 @@ import cz.cendrb.utu.utucomponents.Task;
  */
 public class Adder extends DataOperationTask<Void, Void> {
     public Adder(Context context, HasID itemToAdd, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
-        super(context, itemToAdd, displayDialogs, postAction, postUndoAction);
+        super(context, itemToAdd, displayDialogs, true, postAction, postUndoAction);
     }
 
     @Override

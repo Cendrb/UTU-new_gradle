@@ -224,6 +224,42 @@ public class UtuClient {
         }
     }
 
+    public boolean updateEvent(Event event) {
+        try {
+            List<NameValuePair> eventData = new ArrayList<NameValuePair>();
+            eventData.add(new BasicNameValuePair("_method", "patch"));
+            eventData.add(new BasicNameValuePair("event[title]", event.getTitle()));
+            eventData.add(new BasicNameValuePair("event[description]", event.getDescription()));
+            eventData.add(new BasicNameValuePair("event[location]", String.valueOf(event.getLocation())));
+            eventData.add(new BasicNameValuePair("event[additional_info_url]", event.getAdditionalInfoUrl()));
+            eventData.add(new BasicNameValuePair("event[price]", String.valueOf(event.getPrice())));
+
+            SimpleDateFormat format = new SimpleDateFormat("MM");
+            Calendar calendar = new GregorianCalendar();
+
+            calendar.setTime(event.getStart());
+            eventData.add(new BasicNameValuePair("event_start[date(3i)]", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))));
+            eventData.add(new BasicNameValuePair("event_start[date(2i)]", format.format(event.getStart())));
+            eventData.add(new BasicNameValuePair("event_start[date(1i)]", String.valueOf(calendar.get(Calendar.YEAR))));
+
+            calendar.setTime(event.getStart());
+            eventData.add(new BasicNameValuePair("event_end[date(3i)]", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))));
+            eventData.add(new BasicNameValuePair("event_end[date(2i)]", format.format(event.getEnd())));
+            eventData.add(new BasicNameValuePair("event_end[date(1i)]", String.valueOf(calendar.get(Calendar.YEAR))));
+
+            calendar.setTime(event.getPay());
+            eventData.add(new BasicNameValuePair("pay_date[date(3i)]", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))));
+            eventData.add(new BasicNameValuePair("pay_date[date(2i)]", format.format(event.getPay())));
+            eventData.add(new BasicNameValuePair("pay_date[date(1i)]", String.valueOf(calendar.get(Calendar.YEAR))));
+
+            String result = getStringFrom(getPOSTResponseWithParams("http://utu.herokuapp.com/event/" + event.getId() + ".whoa", eventData));
+            return result.equals("success");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean updateTask(Task task) {
         try {
             List<NameValuePair> taskData = new ArrayList<NameValuePair>();

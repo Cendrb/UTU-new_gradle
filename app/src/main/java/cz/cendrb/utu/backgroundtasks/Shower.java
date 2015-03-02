@@ -15,7 +15,7 @@ import cz.cendrb.utu.utucomponents.Task;
 public class Shower extends DataOperationTask<Void, Void> {
 
     public Shower(Context context, HasID id, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
-        super(context, id, displayDialogs, postAction, postUndoAction);
+        super(context, id, displayDialogs, true, postAction, postUndoAction);
     }
 
     @Override

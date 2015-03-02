@@ -10,41 +10,40 @@ import cz.cendrb.utu.utucomponents.HasID;
 import cz.cendrb.utu.utucomponents.Task;
 
 /**
- * Created by cendr_000 on 24. 2. 2015.
+ * Created by cendr_000 on 2. 3. 2015.
  */
-public class Remover extends DataOperationTask<Void, Void> {
-
-    public Remover(Context context, HasID id, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
-        super(context, id, displayDialogs, true, postAction, postUndoAction);
+public class Updater extends DataOperationTask<Void, Void> {
+    public Updater(Context context, HasID id, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
+        super(context, id, displayDialogs, false, postAction, postUndoAction);
     }
 
     @Override
     protected boolean doInBackgroundForTask(Task task, Void... params) {
-        return MainActivity.utuClient.deleteTask(task.getId());
+        return MainActivity.utuClient.updateTask(task);
     }
 
     @Override
     protected boolean doInBackgroundForExam(Exam exam, Void... params) {
-        return MainActivity.utuClient.deleteExam(exam.getId());
+        return MainActivity.utuClient.updateExam(exam);
     }
 
     @Override
     protected boolean doInBackgroundForEvent(Event event, Void... params) {
-        return MainActivity.utuClient.deleteEvent(event.getId());
+        return MainActivity.utuClient.updateEvent(event);
     }
 
     @Override
     protected void retry() {
-        new Remover(context, id, true, postAction, postUndoAction).execute();
+        new Updater(context, id, displayDialogs, postAction, postUndoAction).execute();
     }
 
     @Override
     protected void undo() {
-        new Adder(context, id, false, postUndoAction, null).execute();
+
     }
 
     @Override
     protected int getTaskDoneMessage() {
-        return R.string.item_was_successfully_deleted;
+        return R.string.item_updated;
     }
 }

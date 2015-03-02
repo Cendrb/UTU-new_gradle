@@ -21,4 +21,17 @@ public interface ITaskExam extends Comparable<ITaskExam>, HasID {
     public String getSubjectString();
 
     public int getId();
+
+    public void setTitle(String title);
+
+    public void setDescription(String description);
+
+    public void setAdditionalInfoUrl(String additionalInfoUrl);
+
+    public void setSubject(int subject);
+
+    public void setDate(Date date);
+
+    public void setGroup(int group);
+
 }

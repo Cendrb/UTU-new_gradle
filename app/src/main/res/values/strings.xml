@@ -88,5 +88,6 @@
     <string name="operation_unsuccessful">Operace se nezdařila</string>
     <string name="retry">Zkusit znovu</string>
     <string name="title_activity_show_te">Penis</string>
+    <string name="item_updated">Položka byla aktualizována</string>
 
 </resources>

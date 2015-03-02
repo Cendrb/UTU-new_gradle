@@ -85,13 +85,9 @@ public class AddEditTask extends Activity {
         });
 
         saveButton = (Button) findViewById(R.id.addTaskSaveButton);
-
         titleText = (EditText) findViewById(R.id.addTaskName);
-
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
-
         additionalInformationText = (EditText) findViewById(R.id.addTaskAdditionalInformation);
-
         dateSelectButton = (Button) findViewById(R.id.addTaskDate);
 
 

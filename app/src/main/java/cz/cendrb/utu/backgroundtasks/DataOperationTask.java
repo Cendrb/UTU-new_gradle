@@ -23,13 +23,15 @@ public abstract class DataOperationTask<Params, Progress> extends BackgroundTask
     protected HasID id;
     protected Runnable postAction;
     protected Runnable postUndoAction;
+    protected boolean canBeUndone;
 
-    public DataOperationTask(Context context, HasID id, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
+    public DataOperationTask(Context context, HasID id, boolean displayDialogs, boolean canBeUndone, Runnable postAction, Runnable postUndoAction) {
         super(context);
         this.displayDialogs = displayDialogs;
         this.id = id;
         this.postAction = postAction;
         this.postUndoAction = postUndoAction;
+        this.canBeUndone = canBeUndone;
     }
 
     @Override
@@ -72,12 +74,15 @@ public abstract class DataOperationTask<Params, Progress> extends BackgroundTask
                 postAction.run();
 
             if (displayDialogs)
-                Snackbars.undo(context, new ActionClickListener() {
-                    @Override
-                    public void onActionClicked(Snackbar snackbar) {
-                        undo();
-                    }
-                }, getTaskDoneMessage());
+                if (canBeUndone)
+                    Snackbars.undo(context, new ActionClickListener() {
+                        @Override
+                        public void onActionClicked(Snackbar snackbar) {
+                            undo();
+                        }
+                    }, getTaskDoneMessage());
+                else
+                    Snackbars.info(context, getTaskDoneMessage());
         }
     }
 

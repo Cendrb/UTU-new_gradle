@@ -5,4 +5,5 @@ package cz.cendrb.utu.utucomponents;
  */
 public interface HasID {
     public int getId();
+    public String getTitle();
 }

@@ -15,7 +15,7 @@ import cz.cendrb.utu.utucomponents.Task;
 public class Hider extends DataOperationTask<Void, Void> {
 
     public Hider(Context context, HasID id, boolean displayDialogs, Runnable postAction, Runnable postUndoAction) {
-        super(context, id, displayDialogs, postAction, postUndoAction);
+        super(context, id, displayDialogs, true, postAction, postUndoAction);
     }
 
     @Override

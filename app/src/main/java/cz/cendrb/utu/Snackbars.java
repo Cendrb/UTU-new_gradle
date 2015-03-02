@@ -32,4 +32,14 @@ public class Snackbars {
                 .type(SnackbarType.SINGLE_LINE)
                 .swipeToDismiss(true));
     }
+
+    public static void info(Context context, int message) {
+        SnackbarManager.show(Snackbar.with(context)
+                .text(message)
+                .actionLabel(R.string.undo)
+                .actionColor(R.color.snackbar_action_color_done)
+                .duration(3000)
+                .type(SnackbarType.SINGLE_LINE)
+                .swipeToDismiss(true));
+    }
 }

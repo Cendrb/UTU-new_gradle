@@ -137,6 +137,30 @@ public class Task implements ITaskExam, HasID, Comparable<ITaskExam> {
         return id;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAdditionalInfoUrl(String additionalInfoUrl) {
+        this.additionalInfoUrl = additionalInfoUrl;
+    }
+
+    public void setSubject(int subject) {
+        this.subject = subject;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
     @Override
     public int compareTo(ITaskExam another) {
         return getDate().compareTo(another.getDate());
