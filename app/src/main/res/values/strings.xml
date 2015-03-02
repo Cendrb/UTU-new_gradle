@@ -89,5 +89,10 @@
     <string name="retry">Zkusit znovu</string>
     <string name="title_activity_show_te">Penis</string>
     <string name="item_updated">Položka byla aktualizována</string>
+    <string name="new_item">Nový</string>
+    <string name="event">událost</string>
+    <string name="edit_event">Upravit událost</string>
+    <string name="title_activity_edit_te">Upravit nebo přidat</string>
+    <string name="select_date">Vyberte datum</string>
 
 </resources>

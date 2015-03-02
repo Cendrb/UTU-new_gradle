@@ -568,6 +568,7 @@ public class UtuClient {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Event event = new Event((Element) node);
                     events.add(event);
+                    Log.d("UtuClient", event.getTitle());
                 }
             }
 

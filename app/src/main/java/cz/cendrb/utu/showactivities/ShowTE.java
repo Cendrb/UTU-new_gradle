@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import org.ocpsoft.prettytime.PrettyTime;
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,8 +17,9 @@ import java.util.Locale;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
+import cz.cendrb.utu.administrationactivities.AddEditTE;
 import cz.cendrb.utu.backgroundtasks.Remover;
-import cz.cendrb.utu.utucomponents.Event;
+import cz.cendrb.utu.enums.UTUType;
 import cz.cendrb.utu.utucomponents.Exam;
 import cz.cendrb.utu.utucomponents.ITaskExam;
 import cz.cendrb.utu.utucomponents.Task;
@@ -44,6 +43,7 @@ public class ShowTE extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_te);
 
+
         title = (TextView) findViewById(R.id.teShowTitle);
         description = (TextView) findViewById(R.id.teShowDescription);
         subject = (TextView) findViewById(R.id.teSubjectCircle);
@@ -51,7 +51,7 @@ public class ShowTE extends ActionBarActivity {
         additionalInfoUrl = (TextView) findViewById(R.id.teShowAdditionalInfo);
 
         item = EventBus.getDefault().getStickyEvent(Exam.class);
-        if(item == null)
+        if (item == null)
             item = EventBus.getDefault().getStickyEvent(Task.class);
 
         title.setText(item.getTitle());
@@ -63,8 +63,7 @@ public class ShowTE extends ActionBarActivity {
         DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)", Locale.ENGLISH);
         date.setText(prettyTime.format(item.getDate()) + dateFormat.format(item.getDate()));
 
-        if(item.getAdditionalInfoUrl() != null && !item.getAdditionalInfoUrl().equals(""))
-        {
+        if (item.getAdditionalInfoUrl() != null && !item.getAdditionalInfoUrl().equals("")) {
             additionalInfoUrl.setVisibility(View.VISIBLE);
             additionalInfoUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,9 +72,7 @@ public class ShowTE extends ActionBarActivity {
                     startActivity(browserIntent);
                 }
             });
-        }
-        else
-        {
+        } else {
             additionalInfoUrl.setVisibility(View.GONE);
         }
     }
@@ -85,7 +82,7 @@ public class ShowTE extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_show_te, menu);
 
-        if(MainActivity.isAdministratorLoggedIn()) {
+        if (MainActivity.isAdministratorLoggedIn()) {
             MenuItem editMenuItem = menu.add(Menu.NONE, EDIT_MENU_ITEM_ID, 99, R.string.edit);
             editMenuItem.setIcon(android.R.drawable.ic_menu_edit);
             editMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -108,7 +105,15 @@ public class ShowTE extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == EDIT_MENU_ITEM_ID) {
-
+            Intent editIntent = new Intent(this, AddEditTE.class);
+            editIntent.putExtra(AddEditTE.EDIT_MODE, true);
+            UTUType utuType;
+            if (item instanceof Exam)
+                utuType = UTUType.exam;
+            else
+                utuType = UTUType.task;
+            editIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(utuType));
+            startActivity(editIntent);
             return true;
         }
 

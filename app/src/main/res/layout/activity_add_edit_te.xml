@@ -17,15 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/labelTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="@string/new_task"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
             <EditText
                 android:id="@+id/addTEName"
                 android:layout_width="match_parent"
@@ -56,20 +47,21 @@
                 android:id="@+id/addTESubject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="10dp" />
 
             <Spinner
                 android:id="@+id/addTEGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="10dp" />
 
             <Button
                 android:id="@+id/addTEDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:onClick="onDateSelectButtonClick"
+                android:layout_marginTop="5dp"
                 android:text="Date" />
 
             <Button
@@ -77,9 +69,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:onClick="onSaveButtonClick"
                 android:text="@string/save" />
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

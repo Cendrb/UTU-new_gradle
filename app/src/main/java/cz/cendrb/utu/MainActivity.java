@@ -33,7 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cendrb.utu.adapters.TEAdapter;
+import cz.cendrb.utu.administrationactivities.AddEditTE;
 import cz.cendrb.utu.backgroundtasks.BackgroundRefresher;
+import cz.cendrb.utu.enums.UTUType;
 import cz.cendrb.utu.foregroundtaskswithdialog.Refresher;
 import cz.cendrb.utu.showactivities.ShowTE;
 import cz.cendrb.utu.utucomponents.ITaskExam;
@@ -57,6 +59,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +67,6 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
 
         new IsAdministrator(this).execute();
-
-
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -121,6 +122,7 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
+            this.menu = menu;
             restoreActionBar();
             return true;
         }
@@ -139,6 +141,22 @@ public class MainActivity extends ActionBarActivity
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://utu.herokuapp.com"));
             startActivity(browserIntent);
             return true;
+        }
+
+        if(id == 1)
+        {
+            Intent newExamIntent = new Intent(this, AddEditTE.class);
+            newExamIntent.putExtra(AddEditTE.EDIT_MODE, false);
+            newExamIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(UTUType.exam));
+            startActivity(newExamIntent);
+        }
+
+        if(id == 2)
+        {
+            Intent newTaskIntent = new Intent(this, AddEditTE.class);
+            newTaskIntent.putExtra(AddEditTE.EDIT_MODE, false);
+            newTaskIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(UTUType.task));
+            startActivity(newTaskIntent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -294,7 +312,7 @@ public class MainActivity extends ActionBarActivity
     /**
      * Created by cendr_000 on 24. 2. 2015.
      */
-    public static class IsAdministrator extends BackgroundTask<Void, Void, Boolean> {
+    public class IsAdministrator extends BackgroundTask<Void, Void, Boolean> {
 
         public IsAdministrator(Context context) {
             super(context);
@@ -309,6 +327,11 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             administratorLoggedIn = aBoolean;
+
+            if(aBoolean) {
+                menu.add(Menu.NONE, 1, 100, R.string.new_exam);
+                menu.add(Menu.NONE, 2, 101, R.string.new_task);
+            }
         }
     }
 }

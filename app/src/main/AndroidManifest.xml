@@ -42,6 +42,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.cendrb.utu.MainActivity" />
         </activity>
+        <activity
+            android:name=".administrationactivities.AddEditTE"
+            android:label="@string/title_activity_edit_te"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".showactivities.ShowTE">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cz.cendrb.utu.showactivities.ShowTE" />
+        </activity>
     </application>
 
 </manifest>
