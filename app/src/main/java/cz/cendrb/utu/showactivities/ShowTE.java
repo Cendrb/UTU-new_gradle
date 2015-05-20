@@ -88,7 +88,7 @@ public class ShowTE extends ActionBarActivity {
             editMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             editMenuItem.setTitle(R.string.edit);
 
-            MenuItem removeMenuItem = menu.add(Menu.NONE, REMOVE_MENU_ITEM_ID, 100, R.string.edit);
+            MenuItem removeMenuItem = menu.add(Menu.NONE, REMOVE_MENU_ITEM_ID, 100, R.string.delete);
             removeMenuItem.setIcon(android.R.drawable.ic_menu_delete);
             removeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             removeMenuItem.setTitle(R.string.exterminate);
@@ -98,11 +98,11 @@ public class ShowTE extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
         if (id == EDIT_MENU_ITEM_ID) {
             Intent editIntent = new Intent(this, AddEditTE.class);
@@ -123,6 +123,6 @@ public class ShowTE extends ActionBarActivity {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
 }

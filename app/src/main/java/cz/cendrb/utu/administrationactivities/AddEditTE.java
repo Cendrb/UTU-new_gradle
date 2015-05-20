@@ -3,6 +3,7 @@ package cz.cendrb.utu.administrationactivities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,28 +71,6 @@ public class AddEditTE extends ActionBarActivity {
         if (item == null) {
             item = EventBus.getDefault().getStickyEvent(Task.class);
         }
-
-        //windowTitle = (TextView) findViewById(R.id.windowTitle);
-        saveButton = (Button) findViewById(R.id.addTESaveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editMode)
-                    new Updater(activity, item, true, new Runnable() {
-                        @Override
-                        public void run() {
-                            activity.finish();
-                        }
-                    }, null).execute();
-                else
-                    new Adder(activity, item, true, new Runnable() {
-                        @Override
-                        public void run() {
-                            activity.finish();
-                        }
-                    }, null).execute();
-            }
-        });
 
         titleText = (EditText) findViewById(R.id.addTEName);
         descriptionText = (EditText) findViewById(R.id.addTEDescription);
@@ -181,8 +160,39 @@ public class AddEditTE extends ActionBarActivity {
             dateSelectButton.setText(dateFormat.format(Calendar.getInstance().getTime()));
         }
 
+        // SAVING
+        saveButton = (Button) findViewById(R.id.addTESaveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDataFromFormToObject();
+                if (editMode)
+                    new Updater(activity, item, true, new Runnable() {
+                        @Override
+                        public void run() {
+                            activity.finish();
+                        }
+                    }, null).execute();
+                else
+                    new Adder(activity, item, true, new Runnable() {
+                        @Override
+                        public void run() {
+                            activity.finish();
+                        }
+                    }, null).execute();
+            }
+        });
+
     }
 
+    private void setDataFromFormToObject() {
+        item.setTitle(titleText.getText().toString());
+        item.setDescription(descriptionText.getText().toString());
+        // subject is set automatically
+        item.setAdditionalInfoUrl(additionalInformationText.getText().toString());
+        // group is set automatically
+        // date is set automatically
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

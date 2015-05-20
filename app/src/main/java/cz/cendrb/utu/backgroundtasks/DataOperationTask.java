@@ -1,6 +1,7 @@
 package cz.cendrb.utu.backgroundtasks;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;

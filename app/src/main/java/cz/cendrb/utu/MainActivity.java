@@ -22,13 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
-import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
-import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
-import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,9 +168,6 @@ public class MainActivity extends ActionBarActivity
         private RecyclerView mRecyclerView;
         private LinearLayoutManager mLayoutManager;
         private RecyclerView.Adapter mAdapter;
-        private RecyclerView.Adapter mWrappedAdapter;
-        private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
-        private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
         private SwipeRefreshLayout mSwipeRefreshLayout;
         protected MainActivity mainActivity;
@@ -213,17 +203,7 @@ public class MainActivity extends ActionBarActivity
 
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerMain);
             mLayoutManager = new LinearLayoutManager(rootView.getContext());
-            //mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-            // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
-            mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
-            mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
-            mRecyclerViewTouchActionGuardManager.setEnabled(true);
-
-            // swipe manager
-            mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
-
-            // adapter
             Bundle bundle = getArguments();
             int sectionNumber = bundle.getInt(ARG_SECTION_NUMBER);
 
@@ -240,18 +220,8 @@ public class MainActivity extends ActionBarActivity
                     break;
             }
 
-            final TEAdapter swipeableTEAdapter = new TEAdapter(rootView.getContext(), data);
-            swipeableTEAdapter.setEventListener(new TEAdapter.EventListener() {
-                @Override
-                public void onItemRemoved(int position) {
-                    //Toast.makeText(rootView.getContext(), "FAP remove", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onItemPinned(int position) {
-                    //Toast.makeText(rootView.getContext(), "FAP pin", Toast.LENGTH_SHORT).show();
-                }
-
+            final TEAdapter teAdapter = new TEAdapter(rootView.getContext(), data);
+            teAdapter.setEventListener(new TEAdapter.EventListener() {
                 @Override
                 public void onItemViewClicked(View v, ITaskExam item) {
                     Intent intent = new Intent(v.getContext(), ShowTE.class);
@@ -261,27 +231,10 @@ public class MainActivity extends ActionBarActivity
                 }
             });
 
-            mAdapter = swipeableTEAdapter;
-
-            mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mAdapter);
-
-            final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+            mAdapter = teAdapter;
 
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mRecyclerView.setAdapter(mWrappedAdapter); // set modified adapter
-            mRecyclerView.setItemAnimator(animator);
-
-            //mRecyclerView.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-
-            mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) getResources().getDrawable(R.drawable.drawer_shadow)));
-            mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(getResources().getDrawable(R.drawable.list_divider), true));
-
-            // NOTE:
-            // The initialization order is very important! This order determines the priority of touch event handling.
-            //
-            // priority: TouchActionGuard > Swipe > DragAndDrop
-            mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
-            mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
+            mRecyclerView.setAdapter(mAdapter);
 
             mSwipeRefreshLayout = (SwipeRefreshLayout) mainActivity.findViewById(R.id.activity_main_swipe_refresh_layout);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
