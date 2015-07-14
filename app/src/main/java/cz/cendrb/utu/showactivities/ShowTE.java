@@ -3,6 +3,7 @@ package cz.cendrb.utu.showactivities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +44,8 @@ public class ShowTE extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_te);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         title = (TextView) findViewById(R.id.teShowTitle);
         description = (TextView) findViewById(R.id.teShowDescription);
@@ -53,6 +56,7 @@ public class ShowTE extends ActionBarActivity {
         item = EventBus.getDefault().getStickyEvent(Exam.class);
         if (item == null)
             item = EventBus.getDefault().getStickyEvent(Task.class);
+        EventBus.getDefault().removeStickyEvent(item);
 
         title.setText(item.getTitle());
         setTitle(item.getTitle());
@@ -60,7 +64,7 @@ public class ShowTE extends ActionBarActivity {
         subject.setText(item.getSubjectString());
 
         PrettyTime prettyTime = new PrettyTime();
-        DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)", Locale.ENGLISH);
+        DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)");
         date.setText(prettyTime.format(item.getDate()) + dateFormat.format(item.getDate()));
 
         if (item.getAdditionalInfoUrl() != null && !item.getAdditionalInfoUrl().equals("")) {
@@ -120,6 +124,12 @@ public class ShowTE extends ActionBarActivity {
         if (id == REMOVE_MENU_ITEM_ID) {
             new Remover(this, this.item, true, null, null).execute();
             finish();
+            return true;
+        }
+
+        if(id == android.R.id.home)
+        {
+            this.finish();
             return true;
         }
 

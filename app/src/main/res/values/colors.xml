@@ -4,7 +4,7 @@
     <color name="primaryColorDark">#669900</color>
     <color name="colorAccent">#ffff0d00</color>
 
-    <color name="taskCircleColor">#ff37cd48</color>
+    <color name="taskCircleColor">#ff2fb44a</color>
     <color name="examCircleColor">#ff2fb44a</color>
 
     <color name="bg_swipe_item_neutral">#ffffffff</color>

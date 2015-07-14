@@ -59,8 +59,6 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new IsAdministrator(this).execute();
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -97,6 +95,9 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
+            case 4:
+                mTitle = getString(R.string.administration);
+                break;
         }
     }
 
@@ -109,17 +110,18 @@ public class MainActivity extends ActionBarActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu pyjMenu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            this.menu = menu;
+            getMenuInflater().inflate(R.menu.main, pyjMenu);
             restoreActionBar();
             return true;
         }
-        return super.onCreateOptionsMenu(menu);
+        menu = pyjMenu;
+        new IsAdministrator(this).execute();
+        return super.onCreateOptionsMenu(pyjMenu);
     }
 
     @Override
@@ -240,6 +242,7 @@ public class MainActivity extends ActionBarActivity
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
+                    mSwipeRefreshLayout.setRefreshing(true);
                     mainActivity.refresh();
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
