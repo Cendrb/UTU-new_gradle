@@ -23,7 +23,6 @@ import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
 import cz.cendrb.utu.Static;
 import cz.cendrb.utu.TaskWithProgressDialog;
-import cz.cendrb.utu.utucomponents.Task;
 
 public class AddEditTask extends Activity {
 

@@ -3,7 +3,6 @@ package cz.cendrb.utu.administrationactivities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +25,6 @@ import cz.cendrb.utu.Static;
 import cz.cendrb.utu.backgroundtasks.Adder;
 import cz.cendrb.utu.backgroundtasks.Updater;
 import cz.cendrb.utu.enums.UTUType;
-import cz.cendrb.utu.utucomponents.Exam;
-import cz.cendrb.utu.utucomponents.ITaskExam;
-import cz.cendrb.utu.utucomponents.Task;
 import de.greenrobot.event.EventBus;
 
 public class AddEditTE extends ActionBarActivity {

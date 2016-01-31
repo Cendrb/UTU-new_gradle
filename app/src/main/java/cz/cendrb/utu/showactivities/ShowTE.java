@@ -14,30 +14,24 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
 import cz.cendrb.utu.administrationactivities.AddEditTE;
 import cz.cendrb.utu.backgroundtasks.Remover;
 import cz.cendrb.utu.enums.UTUType;
-import cz.cendrb.utu.utucomponents.Exam;
-import cz.cendrb.utu.utucomponents.ITaskExam;
-import cz.cendrb.utu.utucomponents.Task;
 import de.greenrobot.event.EventBus;
 
 public class ShowTE extends ActionBarActivity {
 
+    static final int EDIT_MENU_ITEM_ID = 1;
+    static final int REMOVE_MENU_ITEM_ID = 2;
     ITaskExam item;
-
     TextView title;
     TextView description;
     TextView subject;
     TextView date;
     TextView additionalInfoUrl;
-
-    static final int EDIT_MENU_ITEM_ID = 1;
-    static final int REMOVE_MENU_ITEM_ID = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

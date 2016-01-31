@@ -10,7 +10,6 @@ import java.util.List;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
-import cz.cendrb.utu.utucomponents.Event;
 
 /**
  * Created by cendr_000 on 21. 2. 2015.

@@ -3,7 +3,6 @@ package cz.cendrb.utu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.NinePatchDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,9 +28,7 @@ import cz.cendrb.utu.adapters.TEAdapter;
 import cz.cendrb.utu.administrationactivities.AddEditTE;
 import cz.cendrb.utu.backgroundtasks.BackgroundRefresher;
 import cz.cendrb.utu.enums.UTUType;
-import cz.cendrb.utu.foregroundtaskswithdialog.Refresher;
 import cz.cendrb.utu.showactivities.ShowTE;
-import cz.cendrb.utu.utucomponents.ITaskExam;
 import de.greenrobot.event.EventBus;
 
 
@@ -53,6 +50,10 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private Menu menu;
+
+    public static boolean isAdministratorLoggedIn() {
+        return administratorLoggedIn;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu pyjMenu) {
@@ -166,13 +166,11 @@ public class MainActivity extends ActionBarActivity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
+        protected MainActivity mainActivity;
         private RecyclerView mRecyclerView;
         private LinearLayoutManager mLayoutManager;
         private RecyclerView.Adapter mAdapter;
-
         private SwipeRefreshLayout mSwipeRefreshLayout;
-        protected MainActivity mainActivity;
 
         public PlaceholderFragment() {
             super();
@@ -259,10 +257,6 @@ public class MainActivity extends ActionBarActivity
         }
 
 
-    }
-
-    public static boolean isAdministratorLoggedIn() {
-        return administratorLoggedIn;
     }
 
     /**

@@ -5,14 +5,14 @@
     android:layout_height="88dp">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/te_line_item_container"
+        android:id="@+id/genericUtuLineItemContainer"
         android:layout_width="match_parent"
         android:layout_height="88dp"
         android:background="#ffffff"
         android:paddingRight="8dp">
 
         <TextView
-            android:id="@+id/teSubjectCircle"
+            android:id="@+id/gULISubjectCircle"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="12dp"
@@ -26,7 +26,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/teTitle"
+            android:id="@+id/gULITitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -41,7 +41,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/teDescription"
+            android:id="@+id/gULIDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
@@ -56,7 +56,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/teDate"
+            android:id="@+id/gULIDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

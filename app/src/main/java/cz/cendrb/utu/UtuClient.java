@@ -15,7 +15,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,17 +46,18 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import cz.cendrb.utu.enums.LoginRequestResult;
 import cz.cendrb.utu.utucomponents.Event;
-import cz.cendrb.utu.utucomponents.Exam;
-import cz.cendrb.utu.utucomponents.ITaskExam;
-import cz.cendrb.utu.utucomponents.Task;
+import cz.cendrb.utu.utucomponents.storage.DataStorage;
 
 public class UtuClient {
     static final String BACKUP_FILE_NAME = "utudata";
     static final String BACKUP_SUBJECTS_FILE_NAME = "subjects";
+    static final String BASE_URL = "http://utu.herokuapp.com/";
 
     public List<Event> events;
     public List<ITaskExam> exams;
     public List<ITaskExam> tasks;
+
+    public DataStorage dataStorage;
 
     public HashMap<String, Integer> subjects;
     HttpClient client;
@@ -69,9 +69,9 @@ public class UtuClient {
         tasks = new ArrayList<>();
 
         HttpParams httpParams = new BasicHttpParams();
-        //HttpConnectionParams.setSoTimeout(httpParams, 5000);
-
         client = new DefaultHttpClient(httpParams);
+
+        dataStorage = new DataStorage(getStringFrom(BASE_URL + "api/pre_data"));
     }
 
     public static void openUrl(Activity activity, String url) {
@@ -79,6 +79,15 @@ public class UtuClient {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         activity.startActivity(browserIntent);
 
+    }
+
+    public static String strJoin(List<ITaskExam> aArr, String sSep) {
+        StringBuilder sbStr = new StringBuilder();
+        for (ITaskExam kokot : aArr) {
+            sbStr.append(sSep);
+            sbStr.append(aArr.indexOf(kokot) + kokot.getTitle());
+        }
+        return sbStr.toString();
     }
 
     public boolean addExam(Exam exam) {
@@ -599,14 +608,5 @@ public class UtuClient {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public static String strJoin(List<ITaskExam> aArr, String sSep) {
-        StringBuilder sbStr = new StringBuilder();
-        for (ITaskExam kokot : aArr) {
-            sbStr.append(sSep);
-            sbStr.append(aArr.indexOf(kokot) + kokot.getTitle());
-        }
-        return sbStr.toString();
     }
 }

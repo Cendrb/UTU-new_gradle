@@ -15,20 +15,20 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cz.cendrb.utu.R;
+import cz.cendrb.utu.utucomponents.GenericUtuItem;
 
 /**
- * Created by cendr_000 on 21. 2. 2015.
+ * Created by cendr_000 on 31.01.2016.
  */
-public class TEAdapter extends RecyclerView.Adapter<TEAdapter.TEViewHolder> {
+public class GenericUtuItemAdapter extends RecyclerView.Adapter<GenericUtuItemAdapter.GenericUtuItemViewHolder> {
 
-    static String TAG = "TEAdapter";
+    static String TAG = "GenericUtuItemAdapter";
 
     private Context context;
-
-    private List<ITaskExam> data;
+    private List<GenericUtuItem> data;
     private EventListener mEventListener;
 
-    public TEAdapter(Context context, List<ITaskExam> data) {
+    public GenericUtuItemAdapter(Context context, List<GenericUtuItem> data) {
         this.context = context;
         this.data = data;
 
@@ -51,16 +51,16 @@ public class TEAdapter extends RecyclerView.Adapter<TEAdapter.TEViewHolder> {
     }
 
     @Override
-    public TEViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public GenericUtuItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.te_line_item, viewGroup, false);
+                inflate(R.layout.generic_utu_line_item, viewGroup, false);
 
-        return new TEViewHolder(itemView);
+        return new GenericUtuItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TEViewHolder teViewHolder, int i) {
+    public void onBindViewHolder(GenericUtuItemViewHolder eventViewHolder, int i) {
         PrettyTime prettyTime = new PrettyTime();
         DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)");
 
@@ -87,29 +87,33 @@ public class TEAdapter extends RecyclerView.Adapter<TEAdapter.TEViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return events.size();
     }
 
     public interface EventListener {
         void onItemViewClicked(View v, ITaskExam item);
     }
 
-    public static class TEViewHolder extends RecyclerView.ViewHolder {
-        protected ViewGroup vContainer;
-        protected ViewGroup vBottomContainer;
+    public static class GenericUtuItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView vTitle;
-        protected TextView vSubjectCircle;
         protected TextView vDescription;
-        protected TextView vDate;
+        protected TextView vLocation;
+        protected TextView vPrice;
+        protected TextView vDateStart;
+        protected TextView vDateEnd;
+        protected TextView vDatePay;
+        protected TextView vAdditionalInfoUrl;
 
-        public TEViewHolder(View itemView) {
+        public GenericUtuItemViewHolder(View itemView) {
             super(itemView);
-            vTitle = (TextView) itemView.findViewById(R.id.teTitle);
-            vSubjectCircle = (TextView) itemView.findViewById(R.id.teSubjectCircle);
-            vDate = (TextView) itemView.findViewById(R.id.teDate);
-            vDescription = (TextView) itemView.findViewById(R.id.teDescription);
-            vBottomContainer = (ViewGroup) itemView.findViewById(R.id.bottom_container);
-            vContainer = (ViewGroup) itemView.findViewById(R.id.te_line_item_container);
+            vTitle = (TextView) itemView.findViewById(R.id.eventTitle);
+            vDescription = (TextView) itemView.findViewById(R.id.eventDescription);
+            vLocation = (TextView) itemView.findViewById(R.id.eventLocation);
+            //vPrice = (TextView) itemView.findViewById();
+            vDateStart = (TextView) itemView.findViewById(R.id.eventFrom);
+            vDateEnd = (TextView) itemView.findViewById(R.id.eventTo);
+            //vDatePay = (TextView) itemView.findViewById(R.id.event);
+            vAdditionalInfoUrl = (TextView) itemView.findViewById(R.id.eventAdditionalInfo);
         }
     }
 }

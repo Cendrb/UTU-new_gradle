@@ -3,10 +3,6 @@ package cz.cendrb.utu.backgroundtasks;
 import android.content.Context;
 
 import cz.cendrb.utu.MainActivity;
-import cz.cendrb.utu.utucomponents.Event;
-import cz.cendrb.utu.utucomponents.Exam;
-import cz.cendrb.utu.utucomponents.HasID;
-import cz.cendrb.utu.utucomponents.Task;
 
 /**
  * Created by cendr_000 on 24. 2. 2015.
