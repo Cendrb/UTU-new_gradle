@@ -26,6 +26,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import cz.cendrb.utu.adapters.GenericUtuItemAdapter;
 import cz.cendrb.utu.administrationactivities.AddEditUtuItem;
 import cz.cendrb.utu.backgroundtasks.DataLoader;
@@ -284,7 +288,17 @@ public class MainActivity extends ActionBarActivity
                     break;
             }
 
-            final GenericUtuItemAdapter adapter = new GenericUtuItemAdapter(rootView.getContext(), (SparseArray<GenericUtuItem>) data);
+            // convert to arraylist for better manipulation
+            SparseArray<GenericUtuItem> sparseArray = (SparseArray<GenericUtuItem>) data;
+            List<GenericUtuItem> arrayData = new ArrayList<>();
+            for (int i = 0; i < sparseArray.size(); i++) {
+                int key = sparseArray.keyAt(i);
+                GenericUtuItem genericUtuItem = sparseArray.get(key);
+                arrayData.add(genericUtuItem);
+            }
+            Collections.sort(arrayData);
+
+            final GenericUtuItemAdapter adapter = new GenericUtuItemAdapter(rootView.getContext(), arrayData);
             adapter.setEventListener(new GenericUtuItemAdapter.EventListener() {
                 @Override
                 public void onItemViewClicked(View v, GenericUtuItem item) {

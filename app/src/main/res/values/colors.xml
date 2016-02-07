@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#ff4bb537</color>
-    <color name="primaryColorDark">#669900</color>
-    <color name="colorAccent">#ffff0d00</color>
+    <color name="kanaPrimaryColor">#ff4bb537</color>
+    <color name="kanaPrimaryColorDark">#669900</color>
+    <color name="kanaAccentColor">#00c853</color>
+    <color name="kanaBackgroundColor">#f5f5f5</color>
+    <color name="kanaForegroundColor">#ffff0d00</color>
+    <color name="kanaNavigationBarColor">#000000</color>
+    <color name="kanaStatusBarColor">#000000</color>
 
     <color name="taskCircleColor">#ff2fb44a</color>
     <color name="examCircleColor">#ff2fb44a</color>
@@ -12,4 +16,5 @@
     <color name="bg_swipe_item_right">#ff2f8b2a</color>
 
     <color name="snackbar_action_color_done">#ff0caadc</color>
+    <color name="primary_material_light_1">#d26767</color>
 </resources>

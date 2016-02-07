@@ -18,7 +18,7 @@ import cz.cendrb.utu.generics.XmlHelper;
 /**
  * Created by cendr_000 on 31.01.2016.
  */
-public class Event extends GenericUtuItem {
+public class Event extends GenericUtuItem<Event> implements Comparable<Event> {
 
     String location;
     int price;
@@ -127,5 +127,15 @@ public class Event extends GenericUtuItem {
             parseFromXml((Element) XmlHelper.parseXML(responseString).getElementsByTagName("item").item(0));
             return true;
         }
+    }
+
+    @Override
+    public int compareTo(Event another) {
+        if (start.before(another.getStart()))
+            return -1;
+        else if (start.after(another.getStart()))
+            return 1;
+        else
+            return 0;
     }
 }

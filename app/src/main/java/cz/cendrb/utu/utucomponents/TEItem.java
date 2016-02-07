@@ -17,7 +17,7 @@ import cz.cendrb.utu.generics.XmlHelper;
 /**
  * Created by cendr_000 on 31.01.2016.
  */
-public abstract class TEItem extends GenericUtuItem {
+public abstract class TEItem extends GenericUtuItem<TEItem> implements Comparable<TEItem> {
 
     Date date;
     Subject subject;
@@ -79,5 +79,15 @@ public abstract class TEItem extends GenericUtuItem {
             parseFromXml((Element) XmlHelper.parseXML(responseString).getElementsByTagName("item").item(0));
             return true;
         }
+    }
+
+    @Override
+    public int compareTo(TEItem another) {
+        if (date.before(another.getDate()))
+            return -1;
+        else if (date.after(another.getDate()))
+            return 1;
+        else
+            return 0;
     }
 }

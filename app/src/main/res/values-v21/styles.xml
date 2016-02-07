@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Akbar" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/kanaPrimaryColor</item>
+        <item name="android:colorPrimaryDark">@color/kanaPrimaryColorDark</item>
+        <item name="android:colorAccent">@color/kanaAccentColor</item>
+        <item name="android:colorBackground">@color/kanaBackgroundColor</item>
+        <item name="android:colorForeground">@color/kanaForegroundColor</item>
+        <item name="android:navigationBarColor">@color/kanaNavigationBarColor</item>
+        <item name="android:statusBarColor">@color/kanaStatusBarColor</item>
+    </style>
+</resources>

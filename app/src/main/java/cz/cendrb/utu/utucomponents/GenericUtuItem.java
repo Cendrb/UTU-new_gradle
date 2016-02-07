@@ -14,7 +14,7 @@ import cz.cendrb.utu.UtuClient;
 /**
  * Created by cendr_000 on 31.01.2016.
  */
-public abstract class GenericUtuItem extends ActiveRecord {
+public abstract class GenericUtuItem<T extends GenericUtuItem> extends ActiveRecord implements Comparable<T> {
 
     public static final String TYPE = "type";
     public static final String SUCCESS_STRING = "success";

@@ -1,33 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <!-- Main theme colors -->
-        <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
-        <!--   theme UI controls like checkboxes and text fields -->
-        <item name="colorAccent">@color/primaryColorDark</item>
+    <style name="Akbar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorBackground">@color/kanaBackgroundColor</item>
+        <item name="android:colorForeground">@color/kanaForegroundColor</item>
     </style>
-
-    <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:titleTextStyle">@style/titleText</item>
-    </style>
-
-    <style name="titleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">#f56455</item>
-        </style>
-
-    <style name="AppTheme.ShowItem" parent="AppTheme">
-        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
-    </style>
-
-    <!-- Animations for a non-full-screen window or activity. -->
-    <style name="MyAnimation.Window" parent="@android:style/Animation.Dialog">
-        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
-        <item name="android:windowExitAnimation">@anim/abc_slide_out_top</item>
-    </style>
-
 </resources>

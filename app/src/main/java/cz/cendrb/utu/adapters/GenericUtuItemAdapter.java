@@ -3,13 +3,11 @@ package cz.cendrb.utu.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cz.cendrb.utu.R;
@@ -28,15 +26,10 @@ public class GenericUtuItemAdapter extends RecyclerView.Adapter<GenericUtuItemAd
     private List<GenericUtuItem> data;
     private EventListener mEventListener;
 
-    public GenericUtuItemAdapter(Context context, SparseArray<GenericUtuItem> sparseArray) {
+    public GenericUtuItemAdapter(Context context, List<GenericUtuItem> data) {
         this.context = context;
 
-        this.data = new ArrayList<>();
-        for (int i = 0; i < sparseArray.size(); i++) {
-            int key = sparseArray.keyAt(i);
-            GenericUtuItem genericUtuItem = sparseArray.get(key);
-            data.add(genericUtuItem);
-        }
+        this.data = data;
 
         Log.d(TAG, String.valueOf(data.size()));
 
