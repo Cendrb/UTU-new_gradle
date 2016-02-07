@@ -1,8 +1,11 @@
 package cz.cendrb.utu.utucomponents;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,9 +16,13 @@ import java.util.Date;
 public abstract class ActiveRecord {
 
     public static final String ID = "id";
-    protected SimpleDateFormat inputDateFormatter = new SimpleDateFormat("YYYY-MM-dd");
-    protected SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd. MM. YYYY");
+    public static SimpleDateFormat inputDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd. MM. yyyy");
+    public static PrettyTime prettyTime = new PrettyTime();
+    public static DateFormat prettyTimeFormat = new SimpleDateFormat(" (E dd. MM.)");
+    protected UnboundPropertyChanged unboundPropertyChanged;
     int id;
+    boolean alreadyExists;
 
     public ActiveRecord() {
 
@@ -69,6 +76,18 @@ public abstract class ActiveRecord {
         }
     }
 
+    protected void forEachNodeUnder(Element parent, EachNodeListDo listener) {
+        NodeList nodeList = parent.getChildNodes();
+        for (int counter = nodeList.getLength() - 1; counter > 0; counter--)
+            if (nodeList.item(counter).getNodeType() == Node.ELEMENT_NODE) {
+                listener.action((Element) nodeList.item(counter));
+            }
+    }
+
+    protected Element getChildByName(Element element, String name) {
+        return (Element) element.getElementsByTagName(name).item(0);
+    }
+
     @Override
     public boolean equals(Object o) {
         return o instanceof ActiveRecord && ((ActiveRecord) o).getId() == getId();
@@ -77,5 +96,25 @@ public abstract class ActiveRecord {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public boolean exists() {
+        return alreadyExists;
+    }
+
+    public void setAlreadyExists(boolean alreadyExists) {
+        this.alreadyExists = alreadyExists;
+    }
+
+    public void setUnboundPropertyChanged(UnboundPropertyChanged unboundPropertyChanged) {
+        this.unboundPropertyChanged = unboundPropertyChanged;
+    }
+
+    public interface EachNodeListDo {
+        void action(Element element);
+    }
+
+    public interface UnboundPropertyChanged {
+        void propertyChanged(ActiveRecord activeRecord);
     }
 }

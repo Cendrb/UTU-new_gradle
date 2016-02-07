@@ -28,4 +28,5 @@ dependencies {
     compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
     compile 'com.nispok:snackbar:2.9.1'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

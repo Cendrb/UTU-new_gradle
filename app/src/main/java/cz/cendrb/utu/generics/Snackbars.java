@@ -1,4 +1,4 @@
-package cz.cendrb.utu;
+package cz.cendrb.utu.generics;
 
 import android.content.Context;
 
@@ -6,6 +6,8 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.ActionClickListener;
+
+import cz.cendrb.utu.R;
 
 /**
  * Created by cendr_000 on 22. 2. 2015.

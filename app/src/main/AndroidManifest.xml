@@ -12,11 +12,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".administrationactivities.AddEditExam"
-            android:label="@string/new_exam" />
-        <activity
-            android:name=".administrationactivities.AddEditTask"
-            android:label="@string/new_task" />
+            android:name=".administrationactivities.AddEditUtuItem"
+            android:label="@string/new_item"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Login"
             android:label="@string/app_name" >
@@ -35,22 +33,18 @@
                 android:value="cz.cendrb.utu.Login" />
         </activity>
         <activity
-            android:name=".showactivities.ShowTE"
+            android:name=".showactivities.ShowGenericUtuItem"
             android:label="@string/title_activity_show_te"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cz.cendrb.utu.MainActivity" />
         </activity>
-        <activity
-            android:name=".administrationactivities.AddEditTE"
-            android:label="@string/title_activity_edit_te"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".showactivities.ShowTE">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="cz.cendrb.utu.showactivities.ShowTE" />
-        </activity>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

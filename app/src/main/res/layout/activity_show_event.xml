@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -8,21 +9,7 @@
     tools:context=".showactivities.ShowGenericUtuItem">
 
     <TextView
-        android:id="@+id/showTESubjectCircle"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/exam_circle"
-        android:gravity="center"
-        android:text="VýO"
-        android:textColor="#c7ffffff"
-        android:textSize="12dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/showTETitle"
+        android:id="@+id/showEventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -32,23 +19,45 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/showTEDescription"
+        android:id="@+id/showEventDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/showTETitle"
+        android:layout_below="@+id/showEventTitle"
         android:layout_marginTop="10dp"
         android:text="descirption"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/showTEDate"
+        android:id="@+id/showEventLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/showTEDescription"
+        android:layout_below="@+id/showEventDescription"
+        android:layout_marginTop="8dp"
+        android:text="Ivonin Mozek"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/showEventPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/showEventLocation"
+        android:layout_marginTop="8dp"
+        android:text="420 Kč"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/showEventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/showEventPrice"
         android:layout_marginTop="8dp"
         android:text="21. 03. (za 5 dní)"
         android:textAppearance="?android:attr/textAppearanceMedium" />

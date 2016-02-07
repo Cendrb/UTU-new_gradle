@@ -5,8 +5,9 @@ import android.content.Context;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
 
-import cz.cendrb.utu.BackgroundTask;
-import cz.cendrb.utu.Snackbars;
+import cz.cendrb.utu.generics.BackgroundTask;
+import cz.cendrb.utu.generics.Snackbars;
+import cz.cendrb.utu.utucomponents.GenericUtuItem;
 
 /**
  * Created by cendr_000 on 24. 2. 2015.
@@ -14,14 +15,15 @@ import cz.cendrb.utu.Snackbars;
 public abstract class DataOperationTask<Params, Progress> extends BackgroundTask<Params, Progress, DataOperationTask.Result> {
 
     protected boolean displayDialogs;
-    protected HasID id;
+    protected GenericUtuItem item;
     protected Runnable postAction;
     protected Runnable postUndoAction;
     protected boolean canBeUndone;
-    public DataOperationTask(Context context, HasID id, boolean displayDialogs, boolean canBeUndone, Runnable postAction, Runnable postUndoAction) {
+
+    public DataOperationTask(Context context, GenericUtuItem item, boolean displayDialogs, boolean canBeUndone, Runnable postAction, Runnable postUndoAction) {
         super(context);
         this.displayDialogs = displayDialogs;
-        this.id = id;
+        this.item = item;
         this.postAction = postAction;
         this.postUndoAction = postUndoAction;
         this.canBeUndone = canBeUndone;
@@ -29,26 +31,15 @@ public abstract class DataOperationTask<Params, Progress> extends BackgroundTask
 
     @Override
     protected Result doInBackground(Params... params) {
-        boolean result = false;
 
-        if (id instanceof Event)
-            result = doInBackgroundForEvent((Event) id, params);
-        else if (id instanceof Exam)
-            result = doInBackgroundForExam((Exam) id, params);
-        else if (id instanceof Task)
-            result = doInBackgroundForTask((Task) id, params);
-
-        if (result)
+        if (doInBackgroundForItem(item))
             return Result.success;
         else
             return Result.failure;
     }
 
-    protected abstract boolean doInBackgroundForTask(Task task, Params... params);
+    protected abstract boolean doInBackgroundForItem(GenericUtuItem item);
 
-    protected abstract boolean doInBackgroundForExam(Exam exam, Params... params);
-
-    protected abstract boolean doInBackgroundForEvent(Event event, Params... params);
 
     @Override
     protected void onPostExecute(Result result) {

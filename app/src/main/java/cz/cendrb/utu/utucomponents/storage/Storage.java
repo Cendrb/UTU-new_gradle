@@ -17,9 +17,13 @@ public abstract class Storage<ItemType extends ActiveRecord> {
 
     public Storage(Element element, Class<ItemType> classReference) {
         NodeList nodeList = element.getChildNodes();
-        for (int counter = nodeList.getLength() - 1; counter > 0; counter--)
-            if (nodeList.item(counter).getNodeType() == Node.ELEMENT_NODE)
-                add((ItemType) ItemType.getInstance(classReference, (Element) nodeList.item(counter)));
+        for (int counter = nodeList.getLength() - 1; counter > 0; counter--) {
+            if (nodeList.item(counter).getNodeType() == Node.ELEMENT_NODE) {
+                ItemType instance = (ItemType) ItemType.getInstance(classReference, (Element) nodeList.item(counter));
+                instance.setAlreadyExists(true);
+                add(instance);
+            }
+        }
     }
 
     protected void add(ItemType activeRecord) {
@@ -28,5 +32,9 @@ public abstract class Storage<ItemType extends ActiveRecord> {
 
     public ItemType find(int id) {
         return items.get(id);
+    }
+
+    public SparseArray<ItemType> all() {
+        return items;
     }
 }

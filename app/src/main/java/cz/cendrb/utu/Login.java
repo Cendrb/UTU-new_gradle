@@ -14,7 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import cz.cendrb.utu.backgroundtasks.DataLoader;
 import cz.cendrb.utu.enums.LoginResult;
+import cz.cendrb.utu.generics.Static;
+import cz.cendrb.utu.generics.TaskWithProgressDialog;
 
 public class Login extends Activity {
 
@@ -102,8 +105,14 @@ public class Login extends Activity {
     }
 
     private void showData() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        final Context context = this;
+        new DataLoader(this, new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+            }
+        }).execute();
     }
 
     public class LoginWithProgressDialog extends TaskWithProgressDialog<LoginResult> {

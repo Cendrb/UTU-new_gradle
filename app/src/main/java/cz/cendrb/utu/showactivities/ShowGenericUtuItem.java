@@ -1,78 +1,59 @@
 package cz.cendrb.utu.showactivities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import cz.cendrb.utu.MainActivity;
 import cz.cendrb.utu.R;
-import cz.cendrb.utu.administrationactivities.AddEditTE;
-import cz.cendrb.utu.backgroundtasks.Remover;
-import cz.cendrb.utu.enums.UTUType;
-import de.greenrobot.event.EventBus;
+import cz.cendrb.utu.administrationactivities.AddEditUtuItem;
+import cz.cendrb.utu.backgroundtasks.UtuItemDestroyer;
+import cz.cendrb.utu.utucomponents.ActiveRecord;
+import cz.cendrb.utu.utucomponents.GenericUtuItem;
 
-public class ShowTE extends ActionBarActivity {
+public class ShowGenericUtuItem extends ActionBarActivity {
 
     static final int EDIT_MENU_ITEM_ID = 1;
     static final int REMOVE_MENU_ITEM_ID = 2;
-    ITaskExam item;
+    GenericUtuItem item;
     TextView title;
     TextView description;
     TextView subject;
     TextView date;
     TextView additionalInfoUrl;
 
+    ShowViewHolder showViewHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_te);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        title = (TextView) findViewById(R.id.teShowTitle);
-        description = (TextView) findViewById(R.id.teShowDescription);
-        subject = (TextView) findViewById(R.id.teSubjectCircle);
-        date = (TextView) findViewById(R.id.teShowDate);
-        additionalInfoUrl = (TextView) findViewById(R.id.teShowAdditionalInfo);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            int id = bundle.getInt(ActiveRecord.ID);
+            String type = bundle.getString(GenericUtuItem.TYPE);
+            if (type != null && !type.equals("")) {
+                item = MainActivity.utuClient.dataStorage.getUtuItem(id, type);
+            } else
+                throw new IllegalArgumentException("No id or/and type supplied!");
+        } else
+            throw new IllegalArgumentException("No bundle supplied!");
 
-        item = EventBus.getDefault().getStickyEvent(Exam.class);
-        if (item == null)
-            item = EventBus.getDefault().getStickyEvent(Task.class);
-        EventBus.getDefault().removeStickyEvent(item);
-
-        title.setText(item.getTitle());
-        setTitle(item.getTitle());
-        description.setText(item.getDescription());
-        subject.setText(item.getSubjectString());
-
-        PrettyTime prettyTime = new PrettyTime();
-        DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)");
-        date.setText(prettyTime.format(item.getDate()) + dateFormat.format(item.getDate()));
-
-        if (item.getAdditionalInfoUrl() != null && !item.getAdditionalInfoUrl().equals("")) {
-            additionalInfoUrl.setVisibility(View.VISIBLE);
-            additionalInfoUrl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getAdditionalInfoUrl()));
-                    startActivity(browserIntent);
-                }
-            });
+        if (item.getType().equals("event")) {
+            setContentView(R.layout.activity_show_event);
+            showViewHolder = new ShowEventViewHolder(findViewById(android.R.id.content), this);
         } else {
-            additionalInfoUrl.setVisibility(View.GONE);
+            setContentView(R.layout.activity_show_te);
+            showViewHolder = new ShowTEViewHolder(findViewById(android.R.id.content), this);
         }
+        showViewHolder.setupUsing(item);
     }
 
     @Override
@@ -103,20 +84,15 @@ public class ShowTE extends ActionBarActivity {
         int id = menuItem.getItemId();
 
         if (id == EDIT_MENU_ITEM_ID) {
-            Intent editIntent = new Intent(this, AddEditTE.class);
-            editIntent.putExtra(AddEditTE.EDIT_MODE, true);
-            UTUType utuType;
-            if (item instanceof Exam)
-                utuType = UTUType.exam;
-            else
-                utuType = UTUType.task;
-            editIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(utuType));
+            Intent editIntent = new Intent(this, AddEditUtuItem.class);
+            editIntent.putExtra(ActiveRecord.ID, item.getId());
+            editIntent.putExtra(GenericUtuItem.TYPE, item.getType());
             startActivity(editIntent);
             return true;
         }
 
         if (id == REMOVE_MENU_ITEM_ID) {
-            new Remover(this, this.item, true, null, null).execute();
+            new UtuItemDestroyer(this, item, true, null, null).execute();
             finish();
             return true;
         }

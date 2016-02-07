@@ -6,7 +6,7 @@
     <string name="title_section2">Úkoly</string>
     <string name="title_section3">Události</string>
     <string name="action_settings">Nastavení</string>
-    <string name="location">Místo:</string>
+    <string name="location">Místo</string>
     <string name="from">Od:</string>
     <string name="to">Do:</string>
     <string name="datum">Datum</string>
@@ -42,9 +42,6 @@
     <string name="logging_in">Probíhá přihlašování</string>
     <string name="auto_login">Automaticky přihlásit</string>
     <string name="logging_off">Probíhá odhlašování</string>
-    <string name="new_exam">Nový test</string>
-    <string name="new_task">Nový úkol</string>
-    <string name="new_event">Nová událost</string>
     <string name="title">Název</string>
     <string name="description">Popis</string>
     <string name="more_info_url">Více informací (URL)</string>
@@ -62,8 +59,6 @@
     <string name="item_deleting">Probíhá mazání položky</string>
     <string name="item_was_successfully_deleted">Položka byla úspěšně vymazána</string>
     <string name="failed_to_delete_item">Položku se nepodařilo smazat</string>
-    <string name="edit_exam">Upravit test</string>
-    <string name="edit_task">Upravit úkol</string>
     <string name="hide">Skrýt</string>
     <string name="edit">Upravit</string>
     <string name="open_link_for_more_information">Otevřít odkaz pro více informací</string>
@@ -95,5 +90,18 @@
     <string name="title_activity_edit_te">Upravit nebo přidat</string>
     <string name="select_date">Vyberte datum</string>
     <string name="delete">Smazat</string>
+    <string name="exam">test</string>
+    <string name="task">úkol</string>
+    <string name="create">Nový</string>
+    <string name="written_exam">test</string>
+    <string name="raking_exam">zkoušení</string>
+    <string name="text_placeholder">text_placeholder</string>
+    <string name="price">Cena</string>
+    <string name="new_exam">Nový test</string>
+    <string name="new_task">Nový úkol</string>
+    <string name="new_event">Nová událost</string>
+    <string name="new_written_exam">Nová písemka</string>
+    <string name="new_raking_exam">Nové zkoušení</string>
+    <string name="item_created">Položka vytvořena</string>
 
 </resources>

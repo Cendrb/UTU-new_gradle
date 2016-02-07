@@ -15,21 +15,25 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
-import cz.cendrb.utu.adapters.TEAdapter;
-import cz.cendrb.utu.administrationactivities.AddEditTE;
-import cz.cendrb.utu.backgroundtasks.BackgroundRefresher;
-import cz.cendrb.utu.enums.UTUType;
-import cz.cendrb.utu.showactivities.ShowTE;
-import de.greenrobot.event.EventBus;
+import cz.cendrb.utu.adapters.GenericUtuItemAdapter;
+import cz.cendrb.utu.administrationactivities.AddEditUtuItem;
+import cz.cendrb.utu.backgroundtasks.DataLoader;
+import cz.cendrb.utu.generics.BackgroundTask;
+import cz.cendrb.utu.generics.NavigationDrawerFragment;
+import cz.cendrb.utu.showactivities.ShowGenericUtuItem;
+import cz.cendrb.utu.utucomponents.ActiveRecord;
+import cz.cendrb.utu.utucomponents.GenericUtuItem;
 
 
 public class MainActivity extends ActionBarActivity
@@ -50,6 +54,11 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private Menu menu;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     public static boolean isAdministratorLoggedIn() {
         return administratorLoggedIn;
@@ -68,11 +77,19 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void refresh() {
-        new BackgroundRefresher(this).execute();
-        onNavigationDrawerItemSelected(lastPositionSelected);
+        new DataLoader(this, new Runnable() {
+            @Override
+            public void run() {
+                onNavigationDrawerItemSelected(lastPositionSelected);
+            }
+        }).execute();
     }
 
     @Override
@@ -117,10 +134,10 @@ public class MainActivity extends ActionBarActivity
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, pyjMenu);
             restoreActionBar();
+            menu = pyjMenu;
+            new IsAdministrator(this).execute();
             return true;
         }
-        menu = pyjMenu;
-        new IsAdministrator(this).execute();
         return super.onCreateOptionsMenu(pyjMenu);
     }
 
@@ -136,25 +153,70 @@ public class MainActivity extends ActionBarActivity
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://utu.herokuapp.com"));
             startActivity(browserIntent);
             return true;
-        }
+        } else {
+            String type = null;
+            switch (id) {
+                case 1:
+                    type = "event";
+                    break;
+                case 2:
+                    type = "written_exam";
+                    break;
+                case 3:
+                    type = "raking_exam";
+                    break;
+                case 4:
+                    type = "task";
+                    break;
 
-        if(id == 1)
-        {
-            Intent newExamIntent = new Intent(this, AddEditTE.class);
-            newExamIntent.putExtra(AddEditTE.EDIT_MODE, false);
-            newExamIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(UTUType.exam));
-            startActivity(newExamIntent);
-        }
-
-        if(id == 2)
-        {
-            Intent newTaskIntent = new Intent(this, AddEditTE.class);
-            newTaskIntent.putExtra(AddEditTE.EDIT_MODE, false);
-            newTaskIntent.putExtra(AddEditTE.UTU_TYPE, String.valueOf(UTUType.task));
-            startActivity(newTaskIntent);
+            }
+            Intent newGenericUtuItemIntent = new Intent(this, AddEditUtuItem.class);
+            // if we dont supply ID -> will be considered new
+            newGenericUtuItemIntent.putExtra(GenericUtuItem.TYPE, type);
+            startActivity(newGenericUtuItemIntent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://cz.cendrb.utu/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://cz.cendrb.utu/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
     /**
@@ -207,31 +269,34 @@ public class MainActivity extends ActionBarActivity
             Bundle bundle = getArguments();
             int sectionNumber = bundle.getInt(ARG_SECTION_NUMBER);
 
-            List<ITaskExam> data = new ArrayList<>();
-
             Log.d("WHOA", String.valueOf(sectionNumber));
+            Object data = "penis";
 
             switch (sectionNumber) {
                 case 1:
-                    data = utuClient.exams;
+                    data = utuClient.dataStorage.getExams().all();
                     break;
                 case 2:
-                    data = utuClient.tasks;
+                    data = utuClient.dataStorage.getTasks().all();
+                    break;
+                case 3:
+                    data = utuClient.dataStorage.getEvents().all();
                     break;
             }
 
-            final TEAdapter teAdapter = new TEAdapter(rootView.getContext(), data);
-            teAdapter.setEventListener(new TEAdapter.EventListener() {
+            final GenericUtuItemAdapter adapter = new GenericUtuItemAdapter(rootView.getContext(), (SparseArray<GenericUtuItem>) data);
+            adapter.setEventListener(new GenericUtuItemAdapter.EventListener() {
                 @Override
-                public void onItemViewClicked(View v, ITaskExam item) {
-                    Intent intent = new Intent(v.getContext(), ShowTE.class);
+                public void onItemViewClicked(View v, GenericUtuItem item) {
+                    Intent intent = new Intent(v.getContext(), ShowGenericUtuItem.class);
                     Log.d("Khokot", item.getTitle());
-                    EventBus.getDefault().postSticky(item);
+                    intent.putExtra(ActiveRecord.ID, item.getId());
+                    intent.putExtra(GenericUtuItem.TYPE, item.getType());
                     startActivity(intent);
                 }
             });
 
-            mAdapter = teAdapter;
+            mAdapter = adapter;
 
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
@@ -241,8 +306,12 @@ public class MainActivity extends ActionBarActivity
                 @Override
                 public void onRefresh() {
                     mSwipeRefreshLayout.setRefreshing(true);
-                    mainActivity.refresh();
-                    mSwipeRefreshLayout.setRefreshing(false);
+                    new DataLoader(mainActivity, new Runnable() {
+                        @Override
+                        public void run() {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }).execute();
                 }
             });
             mSwipeRefreshLayout.setColorSchemeColors(R.color.primaryColor, R.color.primaryColorDark);
@@ -278,9 +347,11 @@ public class MainActivity extends ActionBarActivity
             super.onPostExecute(aBoolean);
             administratorLoggedIn = aBoolean;
 
-            if(aBoolean) {
-                menu.add(Menu.NONE, 1, 100, R.string.new_exam);
-                menu.add(Menu.NONE, 2, 101, R.string.new_task);
+            if (aBoolean) {
+                menu.add(Menu.NONE, 1, 100, R.string.new_event);
+                menu.add(Menu.NONE, 2, 100, R.string.new_written_exam);
+                menu.add(Menu.NONE, 3, 100, R.string.new_raking_exam);
+                menu.add(Menu.NONE, 4, 101, R.string.new_task);
             }
         }
     }

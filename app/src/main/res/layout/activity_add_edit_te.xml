@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/addTEName"
+                android:id="@+id/addTETitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -34,28 +35,19 @@
                 android:hint="@string/description"
                 android:inputType="textMultiLine" />
 
-            <EditText
-                android:id="@+id/addTEAdditionalInformation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:hint="@string/more_info_url"
-                android:inputType="textUri" />
-
             <Spinner
                 android:id="@+id/addTESubject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:spinnerMode="dropdown" />
 
             <Spinner
                 android:id="@+id/addTEGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:spinnerMode="dropdown" />
 
             <Button
                 android:id="@+id/addTEDate"

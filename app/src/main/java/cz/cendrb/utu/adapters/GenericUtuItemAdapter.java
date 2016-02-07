@@ -3,19 +3,19 @@ package cz.cendrb.utu.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.cendrb.utu.R;
+import cz.cendrb.utu.utucomponents.Event;
 import cz.cendrb.utu.utucomponents.GenericUtuItem;
+import cz.cendrb.utu.utucomponents.TEItem;
 
 /**
  * Created by cendr_000 on 31.01.2016.
@@ -28,9 +28,15 @@ public class GenericUtuItemAdapter extends RecyclerView.Adapter<GenericUtuItemAd
     private List<GenericUtuItem> data;
     private EventListener mEventListener;
 
-    public GenericUtuItemAdapter(Context context, List<GenericUtuItem> data) {
+    public GenericUtuItemAdapter(Context context, SparseArray<GenericUtuItem> sparseArray) {
         this.context = context;
-        this.data = data;
+
+        this.data = new ArrayList<>();
+        for (int i = 0; i < sparseArray.size(); i++) {
+            int key = sparseArray.keyAt(i);
+            GenericUtuItem genericUtuItem = sparseArray.get(key);
+            data.add(genericUtuItem);
+        }
 
         Log.d(TAG, String.valueOf(data.size()));
 
@@ -60,13 +66,10 @@ public class GenericUtuItemAdapter extends RecyclerView.Adapter<GenericUtuItemAd
     }
 
     @Override
-    public void onBindViewHolder(GenericUtuItemViewHolder eventViewHolder, int i) {
-        PrettyTime prettyTime = new PrettyTime();
-        DateFormat dateFormat = new SimpleDateFormat(" (E dd. MM.)");
+    public void onBindViewHolder(GenericUtuItemViewHolder genericUtuItemViewHolder, int i) {
+        final GenericUtuItem item = data.get(i);
 
-        final ITaskExam item = data.get(i);
-
-        teViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        genericUtuItemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mEventListener != null) {
@@ -75,45 +78,38 @@ public class GenericUtuItemAdapter extends RecyclerView.Adapter<GenericUtuItemAd
             }
         });
 
-        teViewHolder.vTitle.setText(item.getTitle());
-        teViewHolder.vSubjectCircle.setText(item.getSubjectString());
-        teViewHolder.vDescription.setText(item.getDescription());
-        if (item instanceof Exam)
-            teViewHolder.vSubjectCircle.setBackground(context.getResources().getDrawable(R.drawable.exam_circle));
-        else
-            teViewHolder.vSubjectCircle.setBackground(context.getResources().getDrawable(R.drawable.task_circle));
-        teViewHolder.vDate.setText(prettyTime.format(item.getDate()) + dateFormat.format(item.getDate()));
+        genericUtuItemViewHolder.vTitle.setText(item.getTitle());
+        if (item instanceof Event)
+            genericUtuItemViewHolder.vSubjectCircle.setVisibility(View.GONE);
+        else {
+            genericUtuItemViewHolder.vSubjectCircle.setBackground(context.getResources().getDrawable(R.drawable.exam_circle));
+            genericUtuItemViewHolder.vSubjectCircle.setText(((TEItem) item).getSubject().getName());
+        }
+        genericUtuItemViewHolder.vDescription.setText(item.getDescription());
+        genericUtuItemViewHolder.vDate.setText(item.getDateString());
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return data.size();
     }
 
     public interface EventListener {
-        void onItemViewClicked(View v, ITaskExam item);
+        void onItemViewClicked(View v, GenericUtuItem item);
     }
 
     public static class GenericUtuItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView vTitle;
         protected TextView vDescription;
-        protected TextView vLocation;
-        protected TextView vPrice;
-        protected TextView vDateStart;
-        protected TextView vDateEnd;
-        protected TextView vDatePay;
-        protected TextView vAdditionalInfoUrl;
+        protected TextView vDate;
+        protected TextView vSubjectCircle;
 
         public GenericUtuItemViewHolder(View itemView) {
             super(itemView);
-            vTitle = (TextView) itemView.findViewById(R.id.eventTitle);
-            vDescription = (TextView) itemView.findViewById(R.id.eventDescription);
-            vLocation = (TextView) itemView.findViewById(R.id.eventLocation);
-            //vPrice = (TextView) itemView.findViewById();
-            vDateStart = (TextView) itemView.findViewById(R.id.eventFrom);
-            vDateEnd = (TextView) itemView.findViewById(R.id.eventTo);
-            //vDatePay = (TextView) itemView.findViewById(R.id.event);
-            vAdditionalInfoUrl = (TextView) itemView.findViewById(R.id.eventAdditionalInfo);
+            vTitle = (TextView) itemView.findViewById(R.id.gULITitle);
+            vDescription = (TextView) itemView.findViewById(R.id.gULIDescription);
+            vDate = (TextView) itemView.findViewById(R.id.gULIDate);
+            vSubjectCircle = (TextView) itemView.findViewById(R.id.gULISubjectCircle);
         }
     }
 }

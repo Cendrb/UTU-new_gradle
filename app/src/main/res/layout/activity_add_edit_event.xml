@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,17 +17,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/labelTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="@string/new_task"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
             <EditText
-                android:id="@+id/addTaskName"
+                android:id="@+id/addEventTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -33,7 +26,7 @@
                 android:hint="@string/title" />
 
             <EditText
-                android:id="@+id/addTaskDescription"
+                android:id="@+id/addEventDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -42,36 +35,56 @@
                 android:inputType="textMultiLine" />
 
             <EditText
-                android:id="@+id/addTaskAdditionalInformation"
+                android:id="@+id/addEventLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:hint="@string/more_info_url"
-                android:inputType="textUri" />
+                android:ems="10"
+                android:hint="@string/location" />
 
-            <Spinner
-                android:id="@+id/addTaskSubject"
+            <EditText
+                android:id="@+id/addEventPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/price"
+                android:inputType="number" />
 
             <Spinner
-                android:id="@+id/addTaskGroup"
+                android:id="@+id/addEventGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown" />
 
             <Button
-                android:id="@+id/addTaskDate"
+                android:id="@+id/addEventStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:onClick="onDateSelectButtonClick"
-                android:text="Date" />
+                android:text="počátek" />
 
             <Button
-                android:id="@+id/addTaskSaveButton"
+                android:id="@+id/addEventEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:onClick="onDateSelectButtonClick"
+                android:text="konec" />
+
+            <Button
+                android:id="@+id/addEventPayDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:onClick="onDateSelectButtonClick"
+                android:text="zaplatit do" />
+
+            <Button
+                android:id="@+id/addEventSaveButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -79,4 +92,4 @@
                 android:text="@string/save" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

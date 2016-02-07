@@ -1,4 +1,4 @@
-package cz.cendrb.utu;
+package cz.cendrb.utu.generics;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
