@@ -328,8 +328,6 @@ public class MainActivity extends ActionBarActivity
                     }).execute();
                 }
             });
-            mSwipeRefreshLayout.setColorSchemeColors(R.color.primaryColor, R.color.primaryColorDark);
-
         }
 
         @Override
